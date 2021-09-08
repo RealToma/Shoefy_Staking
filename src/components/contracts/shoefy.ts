@@ -5,7 +5,7 @@ import * as web3 from 'web3-utils';
 
 export const ShoeFyAddress = "0xd685e8FcC20C55cefcD2d2a2840e345b9aC6A2C7";
 export const RaptorAddress = "0x244273D3A157f72731f9ad50a3477009895873Bd";
-export const StakingAddress = "0x91803C93A3ca6567C7b6251880f43053c501d569";
+export const StakingAddress = "0x27F6B553Fe84967E16f069d92bdabD51B30E2b39";
 export const DonationWalletAddress = "0x50dF6f99c75Aeb6739CB69135ABc6dA77C588f93";
 
 export class Shoefy {
