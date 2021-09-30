@@ -29,8 +29,10 @@ import NFTStakingComponent from './components/pages/nftStakingComponent';
 import './i18n';
 
 const pagesInNavigator = [
-	{ id: 'shoefyStaking', title: 'ShoeFy Staking', component: StakingComponent },
-	{ id: 'nftStaking', title: 'NFT Staking', component: NFTStakingComponent}
+	{ id: 'shoefyStaking', title: 'sNFT Staking', component: StakingComponent },
+	{ id: 'nftStaking', title: 'sNFT Farming', component: NFTStakingComponent},
+	{ id: 'snftStaking', title: '$Shoe Staking', component: NFTStakingComponent},
+
 ];
 
 const overrideCss = css`

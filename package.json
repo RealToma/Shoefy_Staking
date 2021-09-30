@@ -5,11 +5,16 @@
 		"build": "webpack --config webpack.prod.js"
 	},
 	"dependencies": {
+		"@emotion/is-prop-valid": "^1.1.0",
 		"@emotion/react": "^11.4.0",
+		"@emotion/styled": "^11.3.0",
 		"@fortawesome/fontawesome-svg-core": "^1.2.35",
 		"@fortawesome/free-brands-svg-icons": "^5.15.3",
 		"@fortawesome/free-solid-svg-icons": "^5.15.3",
 		"@fortawesome/react-fontawesome": "^0.1.14",
+		"@mui/icons-material": "^5.0.1",
+		"@mui/material": "^5.0.2",
+		"@mui/styles": "^5.0.1",
 		"@popperjs/core": "^2.9.2",
 		"@walletconnect/web3-provider": "^1.4.1",
 		"animated-number-react": "^0.1.2",

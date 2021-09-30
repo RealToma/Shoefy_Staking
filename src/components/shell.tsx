@@ -1,4 +1,7 @@
 import * as React from 'react';
+import { Header } from './pages/header';
+import { Center } from './pages/center';
+import { Footer } from './pages/footer';
 
 import {
 	BrowserRouter as Router,
@@ -30,7 +33,13 @@ export class Shell extends BaseComponent<ShellProps, ShellState> {
 		return <Router>
 			<div className="main-wrapper">
 				<ShellNav pages={pages} />
-				<div className="content-wrapper">
+				<div>
+				<Header />
+				<Center />
+				<Footer />
+				</div>
+
+				{/* <div className="content-wrapper">
 
 					<Switch>
 						{pages.map(page => (
@@ -48,7 +57,7 @@ export class Shell extends BaseComponent<ShellProps, ShellState> {
 							}}
 						/>
 					</Switch>
-				</div>
+				</div> */}
 			</div>
 		</Router>
 	}

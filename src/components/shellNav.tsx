@@ -10,6 +10,15 @@ import Collapsible from 'react-collapsible';
 import './shellNav.css';
 import './shellNav.icons.css';
 
+import CachedIcon from '@mui/icons-material/Cached';
+import AppsIcon from '@mui/icons-material/Apps';
+import InputIcon from '@mui/icons-material/Input';
+
+import mark from '../../src/images/mark.png';
+import mark1 from '../../src/images/mark1.png';
+
+
+
 export type ShellNavProps = {
 	pages: IShellPage[];
 };
@@ -74,8 +83,20 @@ class ShellNav extends BaseComponent<ShellNavProps & WithTranslation, ShellNavSt
 			<div className="navigation-wrapper">
 				<div className="logo-wrapper">
 					<a href="/home">
-						<img src="images/logo.jpg" className="img-logo" alt="ShoeFy Finance" />
-						&nbsp; ShoeFy App
+						<img src={mark} className="img-logo" alt="ShoeFy Finance" />
+						<span className="font_logo">ShoeFy</span>
+					</a>
+					<a href="/home">
+						<img src={mark1} className="img-logo img-logo1" alt="ShoeFy Finance" />
+						<div className="pair_letter">
+							<div className="font_logo1">
+							Buy $Shoe
+							</div>
+							<div className="font_logo2">
+							Current Price:$0.71
+							</div>
+						</div>
+						
 					</a>
 					<button className="navbar-toggler" type="button" data-bs-target="#mainNav" data-bs-toggle="collapse"
 						aria-controls="navbarSupportedContent" aria-label="Toggle navigation" ref={this.collapseRef}>
@@ -84,12 +105,21 @@ class ShellNav extends BaseComponent<ShellNavProps & WithTranslation, ShellNavSt
 				</div>
 				<nav id="mainNav">
 					<ul className="navbar-nav">
+						<li className="nav_letter1"><AppsIcon className="pink" sx={{ fontSize: 20 }} />sNFT Staking</li>
+						<li className="nav_letter"><CachedIcon className="pink" sx={{ fontSize: 20 }} />sNFT Farming</li>
+						<li className="nav_letter"><InputIcon className="pink" sx={{ fontSize: 20 }} />$Shoe Staking</li>
+					</ul>
+				</nav>
+				{/* <nav id="mainNav">
+					<ul className="navbar-nav">
 						{
 							pages1.map(page => {
 								const classes = ['nav-item', page.id];
 								const menuMap = {
 									'shoefyStaking': t('nav.shoefyStaking'),
 									'nftStaking': t('nav.nftStaking'),
+									'snftStaking': t('nav.nftStaking'),
+									
 								}
 								const menuName = (menuMap as any)[`${page.id}`];
 
@@ -100,7 +130,7 @@ class ShellNav extends BaseComponent<ShellNavProps & WithTranslation, ShellNavSt
 						}
 					</ul>
 					
-				</nav>
+				</nav> */}
 			</div>
 		)
 	}
