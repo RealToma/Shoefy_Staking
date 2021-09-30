@@ -7,7 +7,8 @@ export class Wallet {
 	private _address: string = null;
 	private _provider: any = null;
 	private web3Modal = new Web3Modal({
-		network: "binance", // TODO: change this network option to be changable according
+		// network: "binance", // TODO: change this network option to be changable according
+		network: "rinkeby",
 		cacheProvider: false,
 		providerOptions: this.getProviderOptions()
 	});
@@ -25,22 +26,23 @@ export class Wallet {
 				// 	chainId: 56,
 				// 	infuraId: 'TR4KMIQ72NEDFNJ2ZP5C1BGGTD6DSTTGGT'
 				// }
-				options: {
-					rpc: {
-						97: 'https://data-seed-prebsc-1-s1.binance.org:8545/'
-					},
-					network: 'binance',
-					chainId: 97,
-					infuraId: 'TR4KMIQ72NEDFNJ2ZP5C1BGGTD6DSTTGGT '
-				}
 				// options: {
 				// 	rpc: {
-				// 		4: 'https://rinkeby-light.eth.linkpool.io/'
+				// 		97: 'https://data-seed-prebsc-1-s1.binance.org:8545/'
 				// 	},
-				// 	network: 'mainnet',
-				// 	chainId: 4,
+				// 	network: 'binance',
+				// 	chainId: 97,
 				// 	infuraId: 'TR4KMIQ72NEDFNJ2ZP5C1BGGTD6DSTTGGT '
 				// }
+				options: {
+					rpc: {
+						// 4: 'https://rinkeby-light.eth.linkpool.io/',
+						4: 'https://rinkeby.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161'
+					},
+					network: 'mainnet',
+					chainId: 4,
+					infuraId: 'TR4KMIQ72NEDFNJ2ZP5C1BGGTD6DSTTGGT '
+				}
 			}
 		};
 
@@ -76,10 +78,10 @@ export class Wallet {
 		const selectedAccount = accounts[0];
 
 		const provider: any = this._web3.eth.currentProvider;
-		if (!provider || ((provider.chainId != 97) && (provider.networkVersion != 97))) {
+		if (!provider || ((provider.chainId != 4) && (provider.networkVersion != 4))) {
 			if (provider.isMetaMask) {
 				const networkinfo = [{
-					chainId: '0x61',
+					chainId: '0x4',
 					chainName: 'Binance Smart Chain',
 					nativeCurrency:
 					{
@@ -87,13 +89,13 @@ export class Wallet {
 						symbol: 'BNB',
 						decimals: 18
 					},
-					rpcUrls: ['https://bsc-dataseed1.binance.org/'],
+					rpcUrls: ['https://rinkeby.infura.io/v3/9aa3d95b3bc440fa88ea12eaa4456161'],
 					blockExplorerUrls: ['https://bscscan.com/'],
 				}]
-				await ethereum.request({ method: 'wallet_addEthereumChain', params: networkinfo }).catch(function () { throw 'Please choose the Binance Smart Chain as the current network in your wallet app !' })
+				await ethereum.request({ method: 'wallet_addEthereumChain', params: networkinfo }).catch(function () { throw 'Please choose the Rinkeby network as the current network in your wallet app !' })
 			}
 			else {
-				throw 'Please choose the Binance Smart Chain as the current network in your wallet app !';
+				throw 'Please choose the Rinkeby network as the current network in your wallet app !';
 			}
 		}
 

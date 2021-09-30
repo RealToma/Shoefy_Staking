@@ -18,7 +18,7 @@ Trace:
 
 npm manifest: 
   {
-  	"name": "raptor-frontend",
+  	"name": "shoefy-frontend",
   	"scripts": {
   		"start": "webpack-dev-server --config webpack.dev.js",
   		"build": "webpack --config webpack.prod.js"

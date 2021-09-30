@@ -1,4 +1,4 @@
-/* RAPTOR FINANCE BOOTSTRAP THEME
+/* SHOEFY FINANCE BOOTSTRAP THEME
    This file is the CSS theme file which can be included into the website
 */
 
@@ -170,13 +170,13 @@ sup {
 }
 
 a {
-	color: #31c461;
+	color: rgb(171, 217, 234);
 	text-decoration: none;
 	background-color: transparent;
 }
 
 a:hover {
-	color: #68d98d;
+	color: rgb(125, 195, 221);
 	text-decoration: underline;
 }
 

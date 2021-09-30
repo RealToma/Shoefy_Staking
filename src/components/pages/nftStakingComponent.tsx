@@ -3,7 +3,7 @@ import * as numeral from 'numeral';
 
 import { BaseComponent, ShellErrorHandler } from '../shellInterfaces';
 import { Wallet } from '../wallet';
-import { Shoefy } from '../contracts/shoefy';
+import { ShoefyNFTStaking } from '../contracts/nftStaking';
 import { WithTranslation, withTranslation, TFunction, Trans } from 'react-i18next';
 import { fadeInLeft, fadeInRight, pulse } from 'react-animations';
 import styled, { keyframes } from 'styled-components';
@@ -11,11 +11,11 @@ import AnimatedNumber from 'animated-number-react';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
 
-import './stakingComponent.css';
+import './nftStakingComponent.css';
 
 export type StakingProps = {};
 export type StakingState = {
-	shoefy?: Shoefy,
+	nftStaking?: ShoefyNFTStaking,
 	wallet?: Wallet,
 	looping?: boolean,
 
@@ -24,7 +24,8 @@ export type StakingState = {
 	balance?: number,
 	stakedBalance?: number,
 	pendingRewards?: number,
-	apr?: number,
+	userNFTs?: Array<any>,
+	stakedNFTs?: Array<any>,
 
 	// values pending to be set
 	ctPercentageStake?: number,
@@ -47,7 +48,7 @@ const PulseDiv = styled.div`
   animation: infinite 5s ${PulseAnimation};
 `;
 
-class StakingComponent extends BaseComponent<StakingProps & WithTranslation, StakingState> {
+class NFTStakingComponent extends BaseComponent<StakingProps & WithTranslation, StakingState> {
 
 	private _timeout: any = null;
 
@@ -80,16 +81,16 @@ class StakingComponent extends BaseComponent<StakingProps & WithTranslation, Sta
 		ShellErrorHandler.handle(error);
 	}
 
-	async confirmStake(): Promise<void> {
+	async confirmStake(_id): Promise<void> {
 		try {
 			const state = this.readState();
 			this.updateState({ pending: true });
 
-			if (state.ctValueStake >= 0) {
-				await state.shoefy.stake(state.ctValueStake);
+			if (state.userNFTs.length > 0) {
+				await state.nftStaking.stake(_id);
 			}
 			else {
-				NotificationManager.warning("Can't stake a negative amount.");
+				NotificationManager.warning("Can't stake a negative id.");
 				return;
 			}
 
@@ -102,16 +103,16 @@ class StakingComponent extends BaseComponent<StakingProps & WithTranslation, Sta
 		}
 	}
 
-	async confirmUnstake(): Promise<void> {
+	async confirmUnstake(_id): Promise<void> {
 		try {
 			const state = this.readState();
 			this.updateState({ pending: true });
 
-			if (state.ctValueUnstake >= 0) {
-				await state.shoefy.unstakeAndClaim(state.ctValueUnstake);
+			if (state.stakedNFTs.length > 0) {
+				await state.nftStaking.unstakeAndClaim(_id);
 			}
 			else {
-				NotificationManager.warning("Can't unstake a negative amount.");
+				NotificationManager.warning("Can't unstake a negative id.");
 				return;
 			}
 
@@ -129,7 +130,7 @@ class StakingComponent extends BaseComponent<StakingProps & WithTranslation, Sta
 			const state = this.readState();
 			this.updateState({ pending: true });
 
-			await state.shoefy.claim();
+			await state.nftStaking.claim();
 
 			this.updateState({ pending: false });
 			this.updateOnce(true).then();
@@ -150,7 +151,7 @@ class StakingComponent extends BaseComponent<StakingProps & WithTranslation, Sta
 		if (!!this._timeout) {
 			clearTimeout(this._timeout);
 		}
-		this.updateState({ shoefy: null, looping: false });
+		this.updateState({ nftStaking: null, looping: false });
 	}
 
 	private async loop(): Promise<void> {
@@ -162,20 +163,19 @@ class StakingComponent extends BaseComponent<StakingProps & WithTranslation, Sta
 		}
 	}
 	private async updateOnce(resetCt?: boolean): Promise<boolean> {
-		const shoefy = this.readState().shoefy;
+		const nftStaking = this.readState().nftStaking;
 
-		if (!!shoefy) {
+		if (!!nftStaking) {
 			try {
-				await shoefy.refresh();
+				await nftStaking.refresh();
 				if (!this.readState().looping) {
 					return false;
 				}
 				this.updateState({
-					address: shoefy.wallet.currentAddress,
-					balance: shoefy.balance,
-					stakedBalance: shoefy.stakedBalance,
-					pendingRewards: shoefy.pendingStakeRewards,
-					apr: shoefy.apr
+					address: nftStaking.wallet.currentAddress,
+					userNFTs: nftStaking.userNFTs,
+					stakedNFTs: nftStaking.stakedNFTs,
+					pendingRewards: nftStaking.pendingStakeRewards
 				});
 
 				if (resetCt) {
@@ -209,9 +209,10 @@ class StakingComponent extends BaseComponent<StakingProps & WithTranslation, Sta
 				throw 'The wallet connection was cancelled.';
 			}
 
-			const shoefy = new Shoefy(wallet);
+			const nftStaking = new ShoefyNFTStaking(wallet);
+			await nftStaking.refresh();
 
-			this.updateState({ shoefy: shoefy, wallet: wallet, looping: true, pending: false });
+			this.updateState({ nftStaking: nftStaking, wallet: wallet, looping: true, pending: false });
 			this.updateOnce(true).then();
 
 			this.loop().then();
@@ -230,7 +231,7 @@ class StakingComponent extends BaseComponent<StakingProps & WithTranslation, Sta
 				throw 'The wallet connection was cancelled.';
 			}
 
-			this.updateState({ shoefy: null, wallet: null, address: null, looping: false, pending: false });
+			this.updateState({ nftStaking: null, wallet: null, address: null, looping: false, pending: false });
 		}
 		catch (e) {
 			this.updateState({ pending: false });
@@ -239,7 +240,7 @@ class StakingComponent extends BaseComponent<StakingProps & WithTranslation, Sta
 	}
 
 	setStakePercentage(percent) {
-		const r = this.readState().shoefy;
+		const r = this.readState().nftStaking;
 		if (!r) return;
 
 		const p = Math.max(0, Math.min(+(percent || 0), 100));
@@ -252,7 +253,7 @@ class StakingComponent extends BaseComponent<StakingProps & WithTranslation, Sta
 	}
 
 	setStakeValue(value) {
-		const r = this.readState().shoefy;
+		const r = this.readState().nftStaking;
 		if (!r) return;
 
 		const t = r.balance;
@@ -264,7 +265,7 @@ class StakingComponent extends BaseComponent<StakingProps & WithTranslation, Sta
 	}
 
 	setUnstakePercentage(percent) {
-		const r = this.readState().shoefy;
+		const r = this.readState().nftStaking;
 		if (!r) return;
 
 		const p = Math.max(0, Math.min(+(percent || 0), 100));
@@ -277,7 +278,7 @@ class StakingComponent extends BaseComponent<StakingProps & WithTranslation, Sta
 	}
 
 	setUnstakeValue(value) {
-		const r = this.readState().shoefy;
+		const r = this.readState().nftStaking;
 		if (!r) return;
 
 		const t = r.stakedBalance;
@@ -297,7 +298,7 @@ class StakingComponent extends BaseComponent<StakingProps & WithTranslation, Sta
 				<div className="row text-white staking-header">
 					<div className="col-md-12">
 						<div className="staking-title">
-							<span>ShoeFy</span>
+							<span>NFT</span>
 							<span style={{ color: "#abd9ea" }}>Staking</span>
 							{state.address ?
 								(<a className="shadow btn btn-primary ladda-button btn-md btn-wallet float-right" role="button" onClick={this.disconnectWallet}>
@@ -317,13 +318,13 @@ class StakingComponent extends BaseComponent<StakingProps & WithTranslation, Sta
 							href="https://metamask.io/">Metamask</a>)</Trans>.</p> */}
 					</div>
 				</div>
-				<div className="row staking-body">
-					<FadeInLeftDiv className="col-md-6 d-flex">
+				<div className="col staking-body">
+					<FadeInLeftDiv className="col-md-12 d-flex">
 						<div className="shadow d-flex flex-column flex-fill gradient-card primary">
 							<h1>{t('staking.your_info.title')}</h1>
 							<h2>{t('staking.your_info.wallet_address')}</h2>
 							<p>{state.address || t('staking.your_info.connect_wallet')}</p>
-							<h2>{t('staking.your_info.tradeable')}</h2>
+							{/* <h2>{t('staking.your_info.tradeable')}</h2>
 							<AnimatedNumber
 								value={numeral(state.balance || 0).format('0.00')}
 								duration="1000"
@@ -340,7 +341,7 @@ class StakingComponent extends BaseComponent<StakingProps & WithTranslation, Sta
 								className="staking-info"
 							>
 								0 ShoeFy
-							</AnimatedNumber>
+							</AnimatedNumber> */}
 							<h2>{t('staking.your_info.pending_rewards')}</h2>
 							<AnimatedNumber
 								value={numeral(state.pendingRewards || 0).format('0.00')}
@@ -350,18 +351,13 @@ class StakingComponent extends BaseComponent<StakingProps & WithTranslation, Sta
 							>
 								0 Shoefy
 							</AnimatedNumber>
-							<h2>{t('staking.your_info.apr')}</h2>
-							<AnimatedNumber
-								value={numeral(state.apr || 0).format('0')}
-								duration="1000"
-								formatValue={value => `${Number(parseFloat(value).toFixed(0)).toLocaleString('en', { minimumFractionDigits: 0 })}%`}
-								className="staking-info"
-							>
-								0 Shoefy
-							</AnimatedNumber>
+							
+							<div className="d-flex justify-content-center button-row">
+								<button className="btn btn-complementary btn-md link-dark align-self-center stake-claim" disabled={state.pendingRewards <= 0} type="button" onClick={async () => this.confirmClaimRewards()}>{t('staking.stake.claim_rewards')}</button>
+							</div>
 						</div>
 					</FadeInLeftDiv>
-					<FadeInRightDiv className="col-md-6 d-flex">
+					{/* <FadeInRightDiv className="col-md-12 d-flex">
 						<div className="shadow d-flex flex-column flex-fill gradient-card dark">
 							<div style={{ margin: "-20px" }}>
 								<ul role="tablist" className="nav nav-tabs" style={{ padding: "10px", paddingBottom: "0" }}>
@@ -416,6 +412,59 @@ class StakingComponent extends BaseComponent<StakingProps & WithTranslation, Sta
 								</div>
 							</div>
 						</div>
+					</FadeInRightDiv> */}
+					<FadeInRightDiv className="col-md-12 d-flex">
+						<div className="shadow d-flex flex-column flex-fill gradient-card dark">
+							<div style={{ margin: "-20px" }}>
+							<ul role="tablist" className="nav nav-tabs" style={{ padding: "10px", paddingBottom: "0" }}>
+									<li role="presentation" className="nav-item"><a role="tab" data-bs-toggle="tab" className="nav-link active" href="#ctl-stake">{t('staking.stake.title')}</a></li>
+									<li role="presentation" className="nav-item"><a role="tab" data-bs-toggle="tab" className="nav-link" href="#ctl-unstake">{t('staking.unstake.title')}</a></li>
+								</ul>
+								<div className="tab-content">
+									<div role="tabpanel" className="tab-pane active" id="ctl-stake">
+										<div className="row row-cols-3 nft-container">
+											{
+												state.userNFTs && state.userNFTs.map((item) => (
+													<div className="col nft-item">
+														<div className="d-flex nft-img">
+															<img src={item.img} alt="" />
+														</div>
+														<div className="nft-text">
+															<p>{item.title}</p>
+															<p>{item.description}</p>
+														</div>
+														<div className="nft-action">
+															<button className="btn btn-primary btn-md link-dark align-self-center stake-confirm" type="button" onClick={async () => this.confirmStake(item.id)}>{t('staking.stake.title')}</button>
+														</div>
+													</div>
+												))
+											}
+										</div>
+									</div>
+									<div role="tabpanel" className="tab-pane" id="ctl-unstake">
+										<div className="row row-cols-3 nft-container">
+											{
+												state.stakedNFTs && state.stakedNFTs.map((item) => (
+													<div className="col nft-item">
+														<div className="d-flex nft-img">
+															<img src={item.img} alt="" />
+														</div>
+														<div className="nft-text">
+															<p>{item.title}</p>
+															<p>{item.description}</p>
+														</div>
+														<div className="nft-action">
+														<button className="btn btn-primary btn-md link-dark align-self-center stake-confirm" type="button" onClick={async () => this.confirmUnstake(item.id)}>{t('staking.unstake.title')}</button>
+														</div>
+													</div>
+												))
+											}
+										</div>
+									</div>
+								</div>
+								
+							</div>
+						</div>
 					</FadeInRightDiv>
 				</div>
 			</div>
@@ -424,4 +473,4 @@ class StakingComponent extends BaseComponent<StakingProps & WithTranslation, Sta
 	}
 }
 
-export default withTranslation()(StakingComponent);
+export default withTranslation()(NFTStakingComponent);

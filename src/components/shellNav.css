@@ -24,6 +24,15 @@
 	position: relative;
 }
 
+.navigation-wrapper .logo-wrapper a{
+	display: flex;
+	align-items: center;
+	position: relative;
+	font-size: 18px;
+	font-weight: bold;
+	text-decoration: none;
+}
+
 .navigation-wrapper .logo-wrapper .img-logo {
 	display: block;
 	height: 48px;
@@ -63,12 +72,12 @@
 
 .navigation-wrapper ul li a:hover {
 	background-color: #141d2c;
-	color: #31C461;
+	color: rgb(171, 217, 234);
 }
 
 .navigation-wrapper ul li a.active {
 	background-color: #141A24;
-	color: #31C461;
+	color: rgb(171, 217, 234);
 }
 
 .navigation-wrapper select {

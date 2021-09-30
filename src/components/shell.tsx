@@ -29,7 +29,7 @@ export class Shell extends BaseComponent<ShellProps, ShellState> {
 		const pages = this.readProps().pages;
 		return <Router>
 			<div className="main-wrapper">
-				{/* <ShellNav pages={pages} /> */}
+				<ShellNav pages={pages} />
 				<div className="content-wrapper">
 
 					<Switch>

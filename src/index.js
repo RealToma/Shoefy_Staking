@@ -24,11 +24,13 @@ import StakingComponent from './components/pages/stakingComponent';
 // import FarmComponent from './components/pages/farmComponent';
 // import LiquidityComponent from './components/pages/liquidityComponent';
 // import LaunchComponent from './components/pages/launchComponent'; WIP
+import NFTStakingComponent from './components/pages/nftStakingComponent';
 
 import './i18n';
 
 const pagesInNavigator = [
-	{ id: 'home', title: 'Home', component: StakingComponent }
+	{ id: 'shoefyStaking', title: 'ShoeFy Staking', component: StakingComponent },
+	{ id: 'nftStaking', title: 'NFT Staking', component: NFTStakingComponent}
 ];
 
 const overrideCss = css`
