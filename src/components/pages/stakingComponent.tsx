@@ -352,9 +352,9 @@ class StakingComponent extends BaseComponent<StakingProps & WithTranslation, Sta
 							</AnimatedNumber>
 							<h2>{t('staking.your_info.apr')}</h2>
 							<AnimatedNumber
-								value={numeral(state.apr || 0).format('0')}
+								value={numeral(state.apr || 0).format('0.00')}
 								duration="1000"
-								formatValue={value => `${Number(parseFloat(value).toFixed(0)).toLocaleString('en', { minimumFractionDigits: 0 })}%`}
+								formatValue={value => `${Number(parseFloat(value).toFixed(2)).toLocaleString('en', { minimumFractionDigits: 2 })}%`}
 								className="staking-info"
 							>
 								0 Shoefy

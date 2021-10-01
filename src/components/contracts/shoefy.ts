@@ -4,7 +4,7 @@ import {Contract} from 'web3-eth-contract';
 import * as web3 from 'web3-utils';
 
 export const ShoeFyAddress = "0x8d9d3a7e26b397d3B3901b3f545A0c3776021Dff";
-export const StakingAddress = "0x74f425Db5765050c58f5FFB9879FaE6189178Dac";
+export const StakingAddress = "0xc959cDc50eEba53b9cD07637e50A706fd6a92031";
 export const DonationWalletAddress = "0x50dF6f99c75Aeb6739CB69135ABc6dA77C588f93";
 
 export class Shoefy {
@@ -74,6 +74,7 @@ export class Shoefy {
 		this._balance = await this._shoeFyContract.methods.balanceOf(this._wallet.currentAddress).call() / (10 ** 18);
 		this._stake = await this._stakingContract.methods.stakedBalanceOf(this._wallet.currentAddress).call() / (10 ** 18);
 		this._pendingRewards = await this._stakingContract.methods.pendingRewards(this._wallet.currentAddress).call() / (10 ** 18);
-		this._apr = await this._stakingContract.methods.getCurrentAPR().call();
+		this._apr = await this._stakingContract.methods.getCurrentAPR().call() / 100;
+		console.log('_apr', this._apr);
 	}
 }
