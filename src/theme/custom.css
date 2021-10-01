@@ -27,14 +27,17 @@ body {
 }
 
 .gradient-card.dark {
-	background: var(--space-alt);
+	/* background: var(--space-alt); */
+	background-color: #313862;
 	color: var(--light);
 	border: 1px solid var(--light);
 }
 
 .gradient-card.primary {
-	background: linear-gradient(rgb(48, 154, 196), rgba(85, 175, 211, 0.5) 100%);
-	color: var(--dark);
+	/* background: linear-gradient(rgb(48, 154, 196), rgba(85, 175, 211, 0.5) 100%); */
+	background-color: #313862;
+	color: white;
+	/* color: var(--dark); */
 	border: 1px solid var(--dark);
 }
 

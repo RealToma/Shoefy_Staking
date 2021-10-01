@@ -34,13 +34,9 @@ export class Shell extends BaseComponent<ShellProps, ShellState> {
 		return <Router>
 			<div className="main-wrapper">
 				<ShellNav pages={pages} />
-				<div>
-				<Header />
-				<Center />
-				<Footer />
-				</div>
 
-				{/* <div className="content-wrapper">
+
+				<div className="content-wrapper">
 
 					<Switch>
 						{pages.map(page => (
@@ -57,8 +53,13 @@ export class Shell extends BaseComponent<ShellProps, ShellState> {
 								)
 							}}
 						/>
+						<div>
+						<Header />
+						<Center />
+						<Footer />
+						</div>
 					</Switch>
-				</div> */}
+				</div>
 			</div>
 		</Router>
 	}
