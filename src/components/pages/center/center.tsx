@@ -6,12 +6,10 @@ import GridViewIcon from '@mui/icons-material/GridView';
 import  graph_yellow from '../../../images/graph_yellow.png';
 import  graph_grape from '../../../images/graph_grape.png';
 import  graph_big from '../../../images/graph_big.png';
-
 import  back_yellow from '../../../images/back_yellow.png';
 import  back_pink from '../../../images/back_pink.png';
 import  back_blue from '../../../images/back_blue.png';
 import  back_gradient from '../../../images/back_gradient.png';
-
 import  shoes from '../../../images/shoes.png';
 import  dollar from '../../../images/dollar.png';
 
@@ -21,8 +19,7 @@ function Center() {
             <div className="ic_top">
                 <div className="t_up">
                     <div className="tu_left">
-                        <div className="tul_text">
-                        
+                        <div className="tul_text">  
                         </div>
                         <div className="tul_text">
                             <div className="tul_up">

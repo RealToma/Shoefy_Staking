@@ -6,6 +6,8 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 
 import Img from '../../../images/fox.png';
+
+
 function Header() {
     return (
         <div className="i_header"> 
