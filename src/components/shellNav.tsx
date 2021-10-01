@@ -105,11 +105,12 @@ class ShellNav extends BaseComponent<ShellNavProps & WithTranslation, ShellNavSt
 				</div>
 				<nav id="mainNav">
 					<ul className="navbar-nav">
-						<li className="nav_letter1"><AppsIcon className="pink" sx={{ fontSize: 20 }} />sNFT Staking</li>
-						<li className="nav_letter"><CachedIcon className="pink" sx={{ fontSize: 20 }} />sNFT Farming</li>
-						<li className="nav_letter"><InputIcon className="pink" sx={{ fontSize: 20 }} />$Shoe Staking</li>
+						<a className="link_letter" href="nftStaking"><li className="nav_letter1"><AppsIcon className="pink" sx={{ fontSize: 20 }} />sNFT Staking</li></a>
+						<a className="link_letter" href="nftFarming"><li className="nav_letter"><CachedIcon className="pink" sx={{ fontSize: 20 }} />sNFT Farming</li></a>
+						<a className="link_letter" href="shoefyStaking"><li className="nav_letter"><InputIcon className="pink" sx={{ fontSize: 20 }} />$Shoe Staking</li></a>
 					</ul>
 				</nav>
+
 				{/* <nav id="mainNav">
 					<ul className="navbar-nav">
 						{
