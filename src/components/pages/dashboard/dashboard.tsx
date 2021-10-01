@@ -1,5 +1,5 @@
 import React from 'react';
-import './center.css';
+import './dashboard.css';
 
 import GridViewIcon from '@mui/icons-material/GridView';
 
@@ -13,7 +13,7 @@ import  back_gradient from '../../../images/back_gradient.png';
 import  shoes from '../../../images/shoes.png';
 import  dollar from '../../../images/dollar.png';
 
-function Center() {
+function Dashboard() {
     return (
         <div className="i_center">
             <div className="ic_top">
@@ -165,4 +165,4 @@ function Center() {
     );
 }
 
-export { Center };
+export default Dashboard;

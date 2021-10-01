@@ -1,6 +1,5 @@
 import * as React from 'react';
 import { Header } from './pages/header';
-import { Center } from './pages/center';
 import { Footer } from './pages/footer';
 
 import {
@@ -34,39 +33,30 @@ export class Shell extends BaseComponent<ShellProps, ShellState> {
 		return <Router>
 			<div className="main-wrapper">
 				<ShellNav pages={pages} />
-
-
 				<div className="content-wrapper">
 					<div className="part_h">
-					<Header />
+						<Header />
 					</div>
 					<div className="part_c">
-
-					<Switch>
-						{pages.map(page => (
-							<Route key={`${page.id}`} path={'/' + page.id}>
-								<ShellHost page={page} />
-							</Route>
-						))}
-						<Route
-							exact
-							path="/"
-							render={() => {
-								return (
-									<Redirect to="/home" />
-								)
-							}}
-						/>
-						<div>
-						
-						<Center />
-						
-						</div>
-					</Switch>
+						<Switch>
+							{pages.map(page => (
+								<Route key={`${page.id}`} path={'/' + page.id}>
+									<ShellHost page={page} />
+								</Route>
+							))}
+							<Route
+								exact
+								path="/"
+								render={() => {
+									return (
+										<Redirect to="/home" />
+									)
+								}}
+							/>
+						</Switch>
 					</div>
 				    <div className="part_f">
-
-					<Footer />
+						<Footer />
 					</div>
 				</div>
 			</div>

@@ -15,20 +15,14 @@ import { css } from 'styled-components';
 
 // now all the components
 import {Shell} from './components/shell';
-// import LotteryComponent from './components/pages/lotteryComponent';
-// import HomeComponent from './components/pages/homeComponent';
+import Dashboard from './components/pages/dashboard/dashboard';
 import StakingComponent from './components/pages/stakingComponent';
-// import AboutComponent from './components/pages/aboutComponent';
-// import FaqComponent from './components/pages/faqComponent';
-// import PlaceholderComponent from './components/pages/placeholderComponent';
-// import FarmComponent from './components/pages/farmComponent';
-// import LiquidityComponent from './components/pages/liquidityComponent';
-// import LaunchComponent from './components/pages/launchComponent'; WIP
 import NFTStakingComponent from './components/pages/nftStakingComponent';
 
 import './i18n';
 
 const pagesInNavigator = [
+	{ id: 'home', title: 'Home', component: Dashboard },
 	{ id: 'shoefyStaking', title: 'sNFT Staking', component: StakingComponent },
 	{ id: 'nftStaking', title: 'sNFT Farming', component: NFTStakingComponent},
 	{ id: 'snftStaking', title: '$Shoe Staking', component: NFTStakingComponent},
