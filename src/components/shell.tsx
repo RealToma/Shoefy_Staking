@@ -37,6 +37,10 @@ export class Shell extends BaseComponent<ShellProps, ShellState> {
 
 
 				<div className="content-wrapper">
+					<div className="part_h">
+					<Header />
+					</div>
+					<div className="part_c">
 
 					<Switch>
 						{pages.map(page => (
@@ -54,11 +58,16 @@ export class Shell extends BaseComponent<ShellProps, ShellState> {
 							}}
 						/>
 						<div>
-						<Header />
+						
 						<Center />
-						<Footer />
+						
 						</div>
 					</Switch>
+					</div>
+				    <div className="part_f">
+
+					<Footer />
+					</div>
 				</div>
 			</div>
 		</Router>

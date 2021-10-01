@@ -13,6 +13,9 @@ import 'react-notifications/lib/notifications.css';
 
 import './nftStakingComponent.css';
 
+import {Header} from './header';
+import {Footer} from './footer';
+
 export type StakingProps = {};
 export type StakingState = {
 	nftStaking?: ShoefyNFTStaking,
@@ -294,9 +297,14 @@ class NFTStakingComponent extends BaseComponent<StakingProps & WithTranslation, 
 		const t: TFunction<"translation"> = this.readProps().t;
 
 		return <div className="staking-container">
+			
+			{/* <div className="part_h">
+				<Header/>
+			</div> */}
+			
 			<div className="container">
-				<div className="row text-white staking-header">
-					<div className="col-md-12">
+				<div className="row text-white staking-header ml-3">
+					<div className="col-md-12 ">
 						<div className="staking-title">
 							<span>NFT</span>
 							<span style={{ color: "#abd9ea" }}>Staking</span>
@@ -318,7 +326,7 @@ class NFTStakingComponent extends BaseComponent<StakingProps & WithTranslation, 
 							href="https://metamask.io/">Metamask</a>)</Trans>.</p> */}
 					</div>
 				</div>
-				<div className="col staking-body">
+				<div className="col staking-body mt-4">
 					<FadeInLeftDiv className="col-md-12 d-flex">
 						<div className="shadow d-flex flex-column flex-fill gradient-card primary">
 							<h1>{t('staking.your_info.title')}</h1>
@@ -413,7 +421,7 @@ class NFTStakingComponent extends BaseComponent<StakingProps & WithTranslation, 
 							</div>
 						</div>
 					</FadeInRightDiv> */}
-					<FadeInRightDiv className="col-md-12 d-flex">
+					<FadeInRightDiv className="col-md-12 d-flex mt-5">
 						<div className="shadow d-flex flex-column flex-fill gradient-card dark">
 							<div style={{ margin: "-20px" }}>
 							<ul role="tablist" className="nav nav-tabs" style={{ padding: "10px", paddingBottom: "0" }}>
@@ -462,12 +470,18 @@ class NFTStakingComponent extends BaseComponent<StakingProps & WithTranslation, 
 										</div>
 									</div>
 								</div>
-								
+							
 							</div>
 						</div>
 					</FadeInRightDiv>
 				</div>
+				
 			</div>
+			
+			{/* <div className="part_f">
+				<Footer/>
+			</div> */}
+			
 			<NotificationContainer />
 		</div>
 	}

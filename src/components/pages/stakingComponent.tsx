@@ -294,7 +294,7 @@ class StakingComponent extends BaseComponent<StakingProps & WithTranslation, Sta
 
 		return <div className="staking-container">
 			<div className="container">
-				<div className="row text-white staking-header">
+				<div className="row text-white staking-header ">
 					<div className="col-md-12">
 						<div className="staking-title">
 							<span>ShoeFy</span>
@@ -317,7 +317,7 @@ class StakingComponent extends BaseComponent<StakingProps & WithTranslation, Sta
 							href="https://metamask.io/">Metamask</a>)</Trans>.</p> */}
 					</div>
 				</div>
-				<div className="row staking-body">
+				<div className="row staking-body mt-5">
 					<FadeInLeftDiv className="col-md-6 d-flex">
 						<div className="shadow d-flex flex-column flex-fill gradient-card primary">
 							<h1>{t('staking.your_info.title')}</h1>
