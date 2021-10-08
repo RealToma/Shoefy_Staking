@@ -4,7 +4,7 @@ import {Contract} from 'web3-eth-contract';
 import * as web3 from 'web3-utils';
 import { requestAPICall } from '../../helpers/apiService';
 
-export const ShoeFyAddress = "0x8d9d3a7e26b397d3B3901b3f545A0c3776021Dff";
+export const ShoeFyAddress = "0xfBA067325d5F679D89f2933f4eA4c0158389455a";
 export const ShoeFyNFTAddress = "0x72DbF51BC4Dc948DA21e6790b4935521f86483D1";
 export const NFTStakingAddress = "0x6f92ee699376dd8693903dcB8F07b2BEBB948690";
 
@@ -19,6 +19,7 @@ export class ShoefyNFTStaking {
     private _userNFTs: Array<any> = [];
 	private _stakedNFTs: Array<any> = [];
 	private _pendingRewards: number = 0;
+	private _apr: number = 0;
 
 	constructor(wallet: Wallet) {
 		this._wallet = wallet;
@@ -45,6 +46,9 @@ export class ShoefyNFTStaking {
 	}
 	get pendingStakeRewards(): number {
 		return this._pendingRewards;
+	}
+	get apr(): number {
+		return this._apr;
 	}
 
 	async stake(_id: number): Promise<void> {
@@ -115,6 +119,8 @@ export class ShoefyNFTStaking {
         console.log("Staked NFTs", this._stakedNFTs);
 
 		this._pendingRewards = await this._nftStakingContract.methods.pendingRewards(this._wallet.currentAddress).call() / (10 ** 18);
-        console.log("Pending Rewards: ", this._pendingRewards)
+        console.log("Pending Rewards: ", this._pendingRewards);
+		this._apr = await this._nftStakingContract.methods.getCurrentAPR().call();
+		console.log("User Apr: ", this._apr);
 	}
 }

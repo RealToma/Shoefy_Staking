@@ -34,9 +34,9 @@ export class Shell extends BaseComponent<ShellProps, ShellState> {
 			<div className="main-wrapper">
 				<ShellNav pages={pages} />
 				<div className="content-wrapper">
-					<div className="part_h">
+					{/* <div className="part_h">
 						<Header />
-					</div>
+					</div> */}
 					<div className="part_c">
 						<Switch>
 							{pages.map(page => (

@@ -11,6 +11,10 @@ import AnimatedNumber from 'animated-number-react';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
 
+import SearchIcon from '@mui/icons-material/Search';
+import SettingsIcon from '@mui/icons-material/Settings';
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import FoxImg from '../../images/fox.png';
 import './stakingComponent.css';
 
 export type StakingProps = {};
@@ -86,6 +90,7 @@ class StakingComponent extends BaseComponent<StakingProps & WithTranslation, Sta
 			this.updateState({ pending: true });
 
 			if (state.ctValueStake >= 0) {
+				console.log("ctVa:", state.ctValueStake);
 				await state.shoefy.stake(state.ctValueStake);
 			}
 			else {
@@ -283,8 +288,8 @@ class StakingComponent extends BaseComponent<StakingProps & WithTranslation, Sta
 		const t = r.stakedBalance;
 		const v = Math.max(0, Math.min(+(value || 0), r.stakedBalance));
 		this.updateState({
-			ctPercentageStake: Math.floor(100 * v / t),
-			ctValueStake: v,
+			ctPercentageUnstake: Math.floor(100 * v / t),
+			ctValueUnstake: v,
 		});
 	}
 
@@ -293,8 +298,32 @@ class StakingComponent extends BaseComponent<StakingProps & WithTranslation, Sta
 		const t: TFunction<"translation"> = this.readProps().t;
 
 		return <div className="staking-container">
+			<div className="i_header"> 
+				<div className="ih_left">
+					<SearchIcon sx={{ fontSize: 15 }}/>
+					<span className="ih_text">Type of Cryptocurrency</span>
+				</div>
+				<div className="ih_right">
+					<SettingsIcon  sx={{ fontSize: 15 }}/>
+					<NotificationsIcon className="ih_alert" sx={{ fontSize: 15 }}/>
+					{state.address ?
+						<div onClick={this.disconnectWallet} className="wallet-connect">
+							{state.pending && <span className="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true" > </span>}
+							<img className="ih_img" src={FoxImg} width="30" height="30"></img>
+							<span className="ih_rtext">{t('staking.disconnect_wallet')}</span>
+						</div>
+						:
+						<div onClick={this.connectWallet} className="wallet-connect">
+							{state.pending && <span className="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true" > </span>}
+							<img className="ih_img" src={FoxImg} width="30" height="30"></img>
+							<span className="ih_rtext">{t('staking.connect_wallet')}</span>
+						</div>
+					}
+				</div>
+			</div>
+
 			<div className="container">
-				<div className="row text-white staking-header ">
+				{/* <div className="row text-white staking-header ">
 					<div className="col-md-12">
 						<div className="staking-title">
 							<span>ShoeFy</span>
@@ -311,12 +340,8 @@ class StakingComponent extends BaseComponent<StakingProps & WithTranslation, Sta
 								</a>)
 							}
 						</div>
-
-						{/* <p>{t('staking.paragraph1')}</p> */}
-						{/* <p><Trans i18nKey='staking.paragraph2'>In order to stake Shoefy tokens, you need to connect your browser wallet (such as <a
-							href="https://metamask.io/">Metamask</a>)</Trans>.</p> */}
 					</div>
-				</div>
+				</div> */}
 				<div className="row staking-body mt-5">
 					<FadeInLeftDiv className="col-md-6 d-flex">
 						<div className="shadow d-flex flex-column flex-fill gradient-card primary">

@@ -11,6 +11,10 @@ import AnimatedNumber from 'animated-number-react';
 import { NotificationContainer, NotificationManager } from 'react-notifications';
 import 'react-notifications/lib/notifications.css';
 
+import SearchIcon from '@mui/icons-material/Search';
+import SettingsIcon from '@mui/icons-material/Settings';
+import NotificationsIcon from '@mui/icons-material/Notifications';
+import FoxImg from '../../images/fox.png';
 import './nftStakingComponent.css';
 
 import {Header} from './header';
@@ -29,6 +33,7 @@ export type StakingState = {
 	pendingRewards?: number,
 	userNFTs?: Array<any>,
 	stakedNFTs?: Array<any>,
+	apr?: number,
 
 	// values pending to be set
 	ctPercentageStake?: number,
@@ -59,9 +64,7 @@ class NFTStakingComponent extends BaseComponent<StakingProps & WithTranslation, 
 		super(props);
 
 		this.handleStakeSlider = this.handleStakeSlider.bind(this);
-		this.handleUnstakeSlider = this.handleUnstakeSlider.bind(this);
 		this.handleInputStake = this.handleInputStake.bind(this);
-		this.handleInputUnstake = this.handleInputUnstake.bind(this);
 		this.connectWallet = this.connectWallet.bind(this);
 		this.disconnectWallet = this.disconnectWallet.bind(this);
 		this.state = {};
@@ -70,14 +73,9 @@ class NFTStakingComponent extends BaseComponent<StakingProps & WithTranslation, 
 	handleStakeSlider(event) {
 		this.setStakePercentage(event.target.value);
 	}
-	handleUnstakeSlider(event) {
-		this.setUnstakePercentage(event.target.value);
-	}
+
 	handleInputStake(event) {
 		this.setStakeValue(event.target.value);
-	}
-	handleInputUnstake(event) {
-		this.setUnstakeValue(event.target.value);
 	}
 
 	handleError(error) {
@@ -178,7 +176,8 @@ class NFTStakingComponent extends BaseComponent<StakingProps & WithTranslation, 
 					address: nftStaking.wallet.currentAddress,
 					userNFTs: nftStaking.userNFTs,
 					stakedNFTs: nftStaking.stakedNFTs,
-					pendingRewards: nftStaking.pendingStakeRewards
+					pendingRewards: nftStaking.pendingStakeRewards,
+					apr: nftStaking.apr
 				});
 
 				if (resetCt) {
@@ -267,43 +266,38 @@ class NFTStakingComponent extends BaseComponent<StakingProps & WithTranslation, 
 		});
 	}
 
-	setUnstakePercentage(percent) {
-		const r = this.readState().nftStaking;
-		if (!r) return;
-
-		const p = Math.max(0, Math.min(+(percent || 0), 100));
-		const v = Math.min(((r.stakedBalance) * (p * 0.01)), (r.stakedBalance * 1));
-
-		this.updateState({
-			ctPercentageUnstake: p,
-			ctValueUnstake: v,
-		});
-	}
-
-	setUnstakeValue(value) {
-		const r = this.readState().nftStaking;
-		if (!r) return;
-
-		const t = r.stakedBalance;
-		const v = Math.max(0, Math.min(+(value || 0), r.stakedBalance));
-		this.updateState({
-			ctPercentageStake: Math.floor(100 * v / t),
-			ctValueStake: v,
-		});
-	}
-
 	render() {
 		const state = this.readState();
 		const t: TFunction<"translation"> = this.readProps().t;
 
 		return <div className="staking-container">
 			
-			{/* <div className="part_h">
-				<Header/>
-			</div> */}
+			<div className="i_header"> 
+				<div className="ih_left">
+					<SearchIcon sx={{ fontSize: 15 }}/>
+					<span className="ih_text">Type of Cryptocurrency</span>
+				</div>
+				<div className="ih_right">
+					<SettingsIcon  sx={{ fontSize: 15 }}/>
+					<NotificationsIcon className="ih_alert" sx={{ fontSize: 15 }}/>
+					{state.address ?
+						<div onClick={this.disconnectWallet} className="wallet-connect">
+							{state.pending && <span className="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true" > </span>}
+							<img className="ih_img" src={FoxImg} width="30" height="30"></img>
+							<span className="ih_rtext">{t('staking.disconnect_wallet')}</span>
+						</div>
+						:
+						<div onClick={this.connectWallet} className="wallet-connect">
+							{state.pending && <span className="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true" > </span>}
+							<img className="ih_img" src={FoxImg} width="30" height="30"></img>
+							<span className="ih_rtext">{t('staking.connect_wallet')}</span>
+						</div>
+					}
+				</div>
+			</div>
 			
 			<div className="container">
-				<div className="row text-white staking-header ml-3">
+				{/* <div className="row text-white staking-header ml-3">
 					<div className="col-md-12 ">
 						<div className="staking-title">
 							<span>NFT</span>
@@ -320,12 +314,9 @@ class NFTStakingComponent extends BaseComponent<StakingProps & WithTranslation, 
 								</a>)
 							}
 						</div>
-
-						{/* <p>{t('staking.paragraph1')}</p> */}
-						{/* <p><Trans i18nKey='staking.paragraph2'>In order to stake Shoefy tokens, you need to connect your browser wallet (such as <a
-							href="https://metamask.io/">Metamask</a>)</Trans>.</p> */}
 					</div>
-				</div>
+				</div> */}
+
 				<div className="col staking-body mt-4">
 					<FadeInLeftDiv className="col-md-12 d-flex">
 						<div className="shadow d-flex flex-column flex-fill gradient-card primary">
@@ -359,7 +350,15 @@ class NFTStakingComponent extends BaseComponent<StakingProps & WithTranslation, 
 							>
 								0 Shoefy
 							</AnimatedNumber>
-							
+							<h2>{t('staking.your_info.apr')}</h2>
+							<AnimatedNumber
+								value={numeral(state.apr || 0).format('0.00')}
+								duration="1000"
+								formatValue={value => `${Number(parseFloat(value).toFixed(2)).toLocaleString('en', { minimumFractionDigits: 2 })}%`}
+								className="staking-info"
+							>
+								0 Shoefy
+							</AnimatedNumber>
 							<div className="d-flex justify-content-center button-row">
 								<button className="btn btn-complementary btn-md link-dark align-self-center stake-claim" disabled={state.pendingRewards <= 0} type="button" onClick={async () => this.confirmClaimRewards()}>{t('staking.stake.claim_rewards')}</button>
 							</div>
