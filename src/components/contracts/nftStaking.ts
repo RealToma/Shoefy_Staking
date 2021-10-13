@@ -3,6 +3,7 @@ import {Contract} from 'web3-eth-contract';
 // import { ethers } from 'ethers';
 import * as web3 from 'web3-utils';
 import { requestAPICall } from '../../helpers/apiService';
+import Web3 from 'web3';
 
 export const ShoeFyAddress = "0xfBA067325d5F679D89f2933f4eA4c0158389455a";
 export const ShoeFyNFTAddress = "0x72DbF51BC4Dc948DA21e6790b4935521f86483D1";
@@ -16,6 +17,7 @@ export class ShoefyNFTStaking {
 	private readonly _nftStakingContract: Contract;
 
 	private _balance: number = 0;
+	private _balance_eth: number = 0;
     private _userNFTs: Array<any> = [];
 	private _stakedNFTs: Array<any> = [];
 	private _pendingRewards: number = 0;
@@ -37,6 +39,9 @@ export class ShoefyNFTStaking {
 	}
     get balance(): number {
 		return this._balance;
+	}
+	get balance_eth():number{
+		return this._balance_eth;
 	}
 	get userNFTs(): Array<any> {
 		return this._userNFTs;
@@ -80,6 +85,12 @@ export class ShoefyNFTStaking {
 		await this.refresh();
 	}
 	async refresh(): Promise<void> {
+		let web3 = new Web3(window.ethereum);
+		let balance_eth = await web3.eth.getBalance(this._wallet.currentAddress);
+		// console.log((web3.utils.fromWei(balance_eth, "ether")+" ETH"));
+
+		this._balance_eth = parseFloat((web3.utils.fromWei(balance_eth, "ether"))).toFixed(3);
+
         const userNFTs = [];
         const stakedNFTs = [];
 		this._balance = await this._shoeFyNFTContract.methods.balanceOf(this._wallet.currentAddress).call();
