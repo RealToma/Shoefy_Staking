@@ -7,7 +7,7 @@ import Web3 from 'web3';
 
 export const ShoeFyAddress = "0xfBA067325d5F679D89f2933f4eA4c0158389455a";
 export const ShoeFyNFTAddress = "0x72DbF51BC4Dc948DA21e6790b4935521f86483D1";
-export const NFTStakingAddress = "0x6f92ee699376dd8693903dcB8F07b2BEBB948690";
+export const NFTStakingAddress = "0x31831F9f0a5C95Ce7b0E547C7e9eb8442E92C760";
 
 export class ShoefyNFTStaking {
 	private readonly _wallet: Wallet;
