@@ -4,7 +4,7 @@ import {Contract} from 'web3-eth-contract';
 import * as web3 from 'web3-utils';
 
 export const ShoeFyAddress = "0xfBA067325d5F679D89f2933f4eA4c0158389455a";
-export const StakingAddress = "0xc959cDc50eEba53b9cD07637e50A706fd6a92031";
+export const StakingAddress = "0xb905C3FAe6EcA3075f88A4E817E6B21E0bE74517";
 export const DonationWalletAddress = "0x50dF6f99c75Aeb6739CB69135ABc6dA77C588f93";
 
 export class Shoefy {
