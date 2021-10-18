@@ -3,6 +3,8 @@ import {Contract} from 'web3-eth-contract';
 // import { ethers } from 'ethers';
 import * as web3 from 'web3-utils';
 
+import Web3 from 'web3';
+
 export const ShoeFyAddress = "0xfBA067325d5F679D89f2933f4eA4c0158389455a";
 export const StakingAddress = "0xb905C3FAe6EcA3075f88A4E817E6B21E0bE74517";
 export const DonationWalletAddress = "0x50dF6f99c75Aeb6739CB69135ABc6dA77C588f93";
@@ -17,6 +19,7 @@ export class Shoefy {
 	private _stake: number = 0;
 	private _pendingRewards: number = 0;
 	private _apr: number = 0;
+	private _balance_eth:number =0;
 
 	constructor(wallet: Wallet) {
 		this._wallet = wallet;
@@ -33,6 +36,9 @@ export class Shoefy {
 	}
 	get balance(): number {
 		return this._balance;
+	}
+	get balance_eth(): number{
+		return this._balance_eth;
 	}
 	get stakedBalance(): number {
 		return this._stake;
@@ -71,10 +77,16 @@ export class Shoefy {
 	}
 
 	async refresh(): Promise<void> {
+		let web3 = new Web3(window.ethereum);
+		let balance_eth = await web3.eth.getBalance(this._wallet.currentAddress);
+		// console.log((web3.utils.fromWei(balance_eth, "ether")+" ETH"));
+
+		this._balance_eth = parseFloat((web3.utils.fromWei(balance_eth, "ether"))).toFixed(3);
+		// console.log(this._balance_eth)
 		this._balance = Math.floor(await this._shoeFyContract.methods.balanceOf(this._wallet.currentAddress).call() / (10 ** 12)) / (10 ** 6);
 		this._stake = await this._stakingContract.methods.stakedBalanceOf(this._wallet.currentAddress).call() / (10 ** 18);
 		this._pendingRewards = await this._stakingContract.methods.pendingRewards(this._wallet.currentAddress).call() / (10 ** 18);
 		this._apr = await this._stakingContract.methods.getCurrentAPR().call() / 100;
-		console.log('_apr', this._balance);
+
 	}
 }

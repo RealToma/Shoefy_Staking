@@ -86,7 +86,7 @@ class ShellNav extends BaseComponent<ShellNavProps & WithTranslation, ShellNavSt
 						<img src={mark} className="img-logo" alt="ShoeFy Finance" />
 						<span className="font_logo">ShoeFy</span>
 					</a>
-					<a href="/home">
+					{/* <a href="/home">
 						<img src={mark1} className="img-logo img-logo1" alt="ShoeFy Finance" />
 						<div className="pair_letter">
 							<div className="font_logo1">
@@ -97,7 +97,7 @@ class ShellNav extends BaseComponent<ShellNavProps & WithTranslation, ShellNavSt
 							</div>
 						</div>
 						
-					</a>
+					</a> */}
 					<button className="navbar-toggler" type="button" data-bs-target="#mainNav" data-bs-toggle="collapse"
 						aria-controls="navbarSupportedContent" aria-label="Toggle navigation" ref={this.collapseRef}>
 						<FontAwesomeIcon icon={faBars} />
@@ -105,9 +105,9 @@ class ShellNav extends BaseComponent<ShellNavProps & WithTranslation, ShellNavSt
 				</div>
 				<nav id="mainNav">
 					<ul className="navbar-nav">
+						<NavLink className="link_letter" to="shoefyStaking"><li className="nav_letter"><InputIcon className="pink" sx={{ fontSize: 20 }} />$Shoe Staking</li></NavLink>
 						<NavLink className="link_letter" to="nftStaking"><li className="nav_letter1"><AppsIcon className="pink" sx={{ fontSize: 20 }} />sNFT Staking</li></NavLink>
 						<NavLink className="link_letter" to="nftFarming"><li className="nav_letter"><CachedIcon className="pink" sx={{ fontSize: 20 }} />sNFT Farming</li></NavLink>
-						<NavLink className="link_letter" to="shoefyStaking"><li className="nav_letter"><InputIcon className="pink" sx={{ fontSize: 20 }} />$Shoe Staking</li></NavLink>
 					</ul>
 				</nav>
 
