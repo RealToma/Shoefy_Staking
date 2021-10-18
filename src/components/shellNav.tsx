@@ -75,7 +75,7 @@ class ShellNav extends BaseComponent<ShellNavProps & WithTranslation, ShellNavSt
 		const pages1 = pages.slice(0, 2);
 		const pages2 = pages.slice(3, 7);
 
-		console.log(pages2);
+		// console.log(pages2);
 
 		// pages.pop(); WIP
 
@@ -105,9 +105,10 @@ class ShellNav extends BaseComponent<ShellNavProps & WithTranslation, ShellNavSt
 				</div>
 				<nav id="mainNav">
 					<ul className="navbar-nav">
-						<NavLink className="link_letter" to="shoefyStaking"><li className="nav_letter"><InputIcon className="pink" sx={{ fontSize: 20 }} />$Shoe Staking</li></NavLink>
 						<NavLink className="link_letter" to="nftStaking"><li className="nav_letter1"><AppsIcon className="pink" sx={{ fontSize: 20 }} />sNFT Staking</li></NavLink>
 						<NavLink className="link_letter" to="nftFarming"><li className="nav_letter"><CachedIcon className="pink" sx={{ fontSize: 20 }} />sNFT Farming</li></NavLink>
+						<NavLink className="link_letter" to="shoefyStaking"><li className="nav_letter"><InputIcon className="pink" sx={{ fontSize: 20 }} />$Shoe Staking</li></NavLink>
+						<NavLink className="link_letter" to="shoefyStaking2"><li className="nav_letter"><InputIcon className="pink" sx={{ fontSize: 20 }} />Static $Shoe Staking</li></NavLink>
 					</ul>
 				</nav>
 
