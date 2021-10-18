@@ -27,6 +27,7 @@
             "tradeable": "Tradeable balance",
             "staked": "Staked balance",
             "pending_rewards": "Pending rewards",
+            "staking_period": "Staking Period",
             "apr": "APR"
         },
         "stake": {
