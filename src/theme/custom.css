@@ -4,6 +4,7 @@
 
 body {
 	font-family: 'Mulish', var(--font-family-sans-serif);
+	height:100%
 }
 
 .stretch-screen {

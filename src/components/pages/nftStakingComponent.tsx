@@ -16,6 +16,8 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import NotificationsIcon from '@mui/icons-material/Notifications';
 import FoxImg from '../../images/fox.png';
 import './nftStakingComponent.css';
+import mark_circle from "../../images/mark_circle.png"
+import  down from "../../images/down.png"
 
 import {Header} from './header';
 import {Footer} from './footer';
@@ -60,7 +62,7 @@ const PulseDiv = styled.div`
 class NFTStakingComponent extends BaseComponent<StakingProps & WithTranslation, StakingState> {
 
 	private _timeout: any = null;
-
+	private flag_show = false;
 	constructor(props: StakingProps & WithTranslation) {
 		super(props);
 
@@ -68,7 +70,9 @@ class NFTStakingComponent extends BaseComponent<StakingProps & WithTranslation, 
 		this.handleInputStake = this.handleInputStake.bind(this);
 		this.connectWallet = this.connectWallet.bind(this);
 		this.disconnectWallet = this.disconnectWallet.bind(this);
-		this.state = {};
+		this.state = {
+			flag: true,
+		};
 	}
 
 	handleStakeSlider(event) {
@@ -268,65 +272,36 @@ class NFTStakingComponent extends BaseComponent<StakingProps & WithTranslation, 
 		});
 	}
 
+	show_detail(){
+		if(this.state.flag == false)
+			this.setState({flag:true});
+		else{
+			this.setState({flag:false});
+		}
+		// alert(this.state.flag)
+	}
+
 	render() {
+		let detail;
+		if(this.state.flag == false){
+			detail = '350px'
+		}
+		else{
+			detail = '0px'
+		}
 		const state = this.readState();
 		const t: TFunction<"translation"> = this.readProps().t;
-
-		return <div className="staking-container">
-			
-			<div className="i_header"> 
-				{/* <div className="ih_left">
-					<SearchIcon sx={{ fontSize: 15 }}/>
-					<span className="ih_text">Type of Cryptocurrency</span>
-				</div> */}
-				<div className="ih_right">
-					{/* <SettingsIcon  sx={{ fontSize: 15 }}/>
-					<NotificationsIcon className="ih_alert" sx={{ fontSize: 15 }}/> */}
-					{state.address ?
-						<div onClick={this.disconnectWallet} className="wallet-connect">
-							{state.pending && <span className="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true" > </span>}
-							{state.balance_eth+ " ETH"}
-							<img className="ih_img" src={FoxImg} width="30" height="30"></img>
-							<span className="ih_rtext">{t('staking.disconnect_wallet')}</span>
-						</div>
-						:
-						<div onClick={this.connectWallet} className="wallet-connect">
-							{state.pending && <span className="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true" > </span>}
-							<img className="ih_img" src={FoxImg} width="30" height="30"></img>
-							<span className="ih_rtext">{t('staking.connect_wallet')}</span>
-						</div>
-					}
-				</div>
-			</div>
-			
-			<div className="container">
-				{/* <div className="row text-white staking-header ml-3">
-					<div className="col-md-12 ">
-						<div className="staking-title">
-							<span>NFT</span>
-							<span style={{ color: "#abd9ea" }}>Staking</span>
-							{state.address ?
-								(<a className="shadow btn btn-primary ladda-button btn-md btn-wallet float-right" role="button" onClick={this.disconnectWallet}>
-									{state.pending && <span className="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"> </span>}
-									{t('staking.disconnect_wallet')}
-								</a>)
-								:
-								(<a className="shadow btn btn-primary ladda-button btn-md btn-wallet float-right" role="button" onClick={this.connectWallet}>
-									{state.pending && <span className="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"> </span>}
-									{t('staking.connect_wallet')}
-								</a>)
-							}
-						</div>
+		return <div className="staking-container1">
+			<FadeInLeftDiv className="your_info">
+				<div className="info_up">Your Info</div>
+				<div className="info_down">
+					<div className="show_info">
+						<div className="show_title">{t('staking.your_info.wallet_address')}</div>
+						<div className="show_value">{state.address || t('staking.your_info.connect_wallet')}</div>
 					</div>
-				</div> */}
-
-				<div className="col staking-body mt-4">
-					<FadeInLeftDiv className="col-md-12 d-flex">
-						<div className="shadow d-flex flex-column flex-fill gradient-card primary">
-							<h1>{t('staking.your_info.title')}</h1>
-							<h2>{t('staking.your_info.wallet_address')}</h2>
-							<p>{state.address || t('staking.your_info.connect_wallet')}</p>
-							{/* <h2>{t('staking.your_info.tradeable')}</h2>
+					<div className="show_info">
+						<div className="show_title">{t('staking.your_info.tradeable')}</div>
+						<div className="show_value">
 							<AnimatedNumber
 								value={numeral(state.balance || 0).format('0.00')}
 								duration="1000"
@@ -335,7 +310,11 @@ class NFTStakingComponent extends BaseComponent<StakingProps & WithTranslation, 
 							>
 								0 ShoeFy
 							</AnimatedNumber>
-							<h2>{t('staking.your_info.staked')}</h2>
+							</div>
+					</div>
+					<div className="show_info">
+						<div className="show_title">{t('staking.your_info.staked')}</div>
+						<div className="show_value">
 							<AnimatedNumber
 								value={numeral(state.stakedBalance || 0).format('0.00')}
 								duration="1000"
@@ -343,8 +322,12 @@ class NFTStakingComponent extends BaseComponent<StakingProps & WithTranslation, 
 								className="staking-info"
 							>
 								0 ShoeFy
-							</AnimatedNumber> */}
-							<h2>{t('staking.your_info.pending_rewards')}</h2>
+							</AnimatedNumber>
+						</div>
+					</div>
+					<div className="show_info">
+						<div className="show_title">{t('staking.your_info.pending_rewards')}</div>
+						<div className="show_value">
 							<AnimatedNumber
 								value={numeral(state.pendingRewards || 0).format('0.00')}
 								duration="1000"
@@ -352,8 +335,11 @@ class NFTStakingComponent extends BaseComponent<StakingProps & WithTranslation, 
 								className="staking-info"
 							>
 								0 Shoefy
-							</AnimatedNumber>
-							<h2>{t('staking.your_info.apr')}</h2>
+							</AnimatedNumber></div>
+					</div>
+					<div className="show_info">
+						<div className="show_title">{t('staking.your_info.apr')}</div>
+						<div className="show_value">
 							<AnimatedNumber
 								value={numeral(state.apr || 0).format('0.00')}
 								duration="1000"
@@ -362,130 +348,573 @@ class NFTStakingComponent extends BaseComponent<StakingProps & WithTranslation, 
 							>
 								0 Shoefy
 							</AnimatedNumber>
-							<div className="d-flex justify-content-center button-row">
-								<button className="btn btn-complementary btn-md link-dark align-self-center stake-claim" disabled={state.pendingRewards <= 0} type="button" onClick={async () => this.confirmClaimRewards()}>{t('staking.stake.claim_rewards')}</button>
-							</div>
 						</div>
-					</FadeInLeftDiv>
-					{/* <FadeInRightDiv className="col-md-12 d-flex">
-						<div className="shadow d-flex flex-column flex-fill gradient-card dark">
-							<div style={{ margin: "-20px" }}>
-								<ul role="tablist" className="nav nav-tabs" style={{ padding: "10px", paddingBottom: "0" }}>
-									<li role="presentation" className="nav-item"><a role="tab" data-bs-toggle="tab" className="nav-link active" href="#ctl-stake">{t('staking.stake.title')}</a></li>
-									<li role="presentation" className="nav-item"><a role="tab" data-bs-toggle="tab" className="nav-link" href="#ctl-unstake">{t('staking.unstake.title')}</a></li>
-								</ul>
-								<div className="tab-content">
-									<div role="tabpanel" className="tab-pane active" id="ctl-stake">
-										<form id="staking-form">
-											<label className="form-label">{t('staking.stake.percentage')}</label>
-											<div className="d-flex flex-row align-items-baseline staking-slider-wrapper">
-												<input type="range" className="form-range form-control" min="0" max="100" step="1" disabled={state.pending} value={state.ctPercentageStake || 0} onChange={this.handleStakeSlider} style={{ border: "none", background: "none" }} />
-												<label className="form-label align-self-center">{numeral(state.ctPercentageStake || 0).format('0')}%</label>
-											</div>
-											<div className="d-flex flex-row justify-content-evenly staking-percentages">
-												<button className="btn btn-dark btn-sm flex-grow-1 flex-shrink-0 flex-fill" type="button" disabled={state.pending} onClick={() => this.setStakePercentage(0)}>0%</button>
-												<button className="btn btn-dark btn-sm flex-grow-1 flex-shrink-0 flex-fill" type="button" disabled={state.pending} onClick={() => this.setStakePercentage(25)}>25%</button>
-												<button className="btn btn-dark btn-sm flex-grow-1 flex-shrink-0 flex-fill" type="button" disabled={state.pending} onClick={() => this.setStakePercentage(50)}>50%</button>
-												<button className="btn btn-dark btn-sm flex-grow-1 flex-shrink-0 flex-fill" type="button" disabled={state.pending} onClick={() => this.setStakePercentage(75)}>75%</button>
-												<button className="btn btn-dark btn-sm flex-grow-1 flex-shrink-0 flex-fill" type="button" disabled={state.pending} onClick={() => this.setStakePercentage(100)}>100%</button>
-											</div>
-											<label className="form-label">{t('staking.stake.amount')}</label>
-											<input type="number" className="form-control form-control-lg" disabled={state.pending} onChange={this.handleInputStake} value={state.ctValueStake || 0} />
-											<div className="d-flex justify-content-center button-row">
-												<button className="btn btn-primary btn-md link-dark align-self-center stake-confirm" disabled={state.ctValueStake <= 0 || state.pending} type="button" onClick={async () => this.confirmStake()}>{t('staking.stake.title')}</button>
-												<button className="btn btn-complementary btn-md link-dark align-self-center stake-claim" disabled={state.pendingRewards <= 0} type="button" onClick={async () => this.confirmClaimRewards()}>{t('staking.stake.claim_rewards')}</button>
-											</div>
-										</form>
-									</div>
-									<div role="tabpanel" className="tab-pane" id="ctl-unstake">
-										<form id="unstaking-form">
-											<label className="form-label">{t('staking.unstake.percentage')}</label>
-											<div className="d-flex flex-row align-items-baseline staking-slider-wrapper">
-												<input type="range" className="form-range form-control" min="0" max="100" step="1" disabled={state.pending} value={state.ctPercentageUnstake || 0} onChange={this.handleUnstakeSlider} style={{ border: "none", background: "none" }} />
-												<label className="form-label align-self-center">{numeral(state.ctPercentageUnstake || 0).format('0')}%</label>
-											</div>
-											<div className="d-flex flex-row justify-content-evenly staking-percentages">
-												<button className="btn btn-dark btn-sm flex-grow-1 flex-shrink-0 flex-fill" type="button" disabled={state.pending} onClick={() => this.setUnstakePercentage(0)}>0%</button>
-												<button className="btn btn-dark btn-sm flex-grow-1 flex-shrink-0 flex-fill" type="button" disabled={state.pending} onClick={() => this.setUnstakePercentage(25)}>25%</button>
-												<button className="btn btn-dark btn-sm flex-grow-1 flex-shrink-0 flex-fill" type="button" disabled={state.pending} onClick={() => this.setUnstakePercentage(50)}>50%</button>
-												<button className="btn btn-dark btn-sm flex-grow-1 flex-shrink-0 flex-fill" type="button" disabled={state.pending} onClick={() => this.setUnstakePercentage(75)}>75%</button>
-												<button className="btn btn-dark btn-sm flex-grow-1 flex-shrink-0 flex-fill" type="button" disabled={state.pending} onClick={() => this.setUnstakePercentage(100)}>100%</button>
-											</div>
-											<label className="form-label">{t('staking.unstake.amount')}</label>
-											<input type="number" className="form-control form-control-lg" disabled={state.pending} onChange={this.handleInputUnstake} value={state.ctValueUnstake || 0} />
-											<div className="d-flex justify-content-center button-row">
-												<button className="btn btn-primary btn-md link-dark align-self-center stake-confirm" disabled={state.ctValueUnstake <= 0 || state.pending} type="button" onClick={async () => this.confirmUnstake()}>{t('staking.unstake.title')}</button>
-												<button className="btn btn-complementary btn-md link-dark align-self-center stake-claim" disabled={state.pendingRewards <= 0} type="button" onClick={async () => this.confirmClaimRewards()}>{t('staking.stake.claim_rewards')}</button>
-											</div>
-										</form>
-									</div>
-								</div>
-							</div>
-						</div>
-					</FadeInRightDiv> */}
-					<FadeInRightDiv className="col-md-12 d-flex mt-5">
-						<div className="shadow d-flex flex-column flex-fill gradient-card dark">
-							<div style={{ margin: "-20px" }}>
-							<ul role="tablist" className="nav nav-tabs" style={{ padding: "10px", paddingBottom: "0" }}>
-									<li role="presentation" className="nav-item"><a role="tab" data-bs-toggle="tab" className="nav-link active" href="#ctl-stake">{t('staking.stake.title')}</a></li>
-									<li role="presentation" className="nav-item"><a role="tab" data-bs-toggle="tab" className="nav-link" href="#ctl-unstake">{t('staking.unstake.title')}</a></li>
-								</ul>
-								<div className="tab-content">
-									<div role="tabpanel" className="tab-pane active" id="ctl-stake">
-										<div className="row row-cols-3 nft-container">
-											{
-												state.userNFTs && state.userNFTs.map((item) => (
-													<div className="col nft-item">
-														<div className="d-flex nft-img">
-															<img src={item.img} alt="" />
-														</div>
-														<div className="nft-text">
-															<p>{item.title}</p>
-															<p>{item.description}</p>
-														</div>
-														<div className="nft-action">
-															<button className="btn btn-primary btn-md link-dark align-self-center stake-confirm" type="button" onClick={async () => this.confirmStake(item.id)}>{t('staking.stake.title')}</button>
-														</div>
-													</div>
-												))
-											}
-										</div>
-									</div>
-									<div role="tabpanel" className="tab-pane" id="ctl-unstake">
-										<div className="row row-cols-3 nft-container">
-											{
-												state.stakedNFTs && state.stakedNFTs.map((item) => (
-													<div className="col nft-item">
-														<div className="d-flex nft-img">
-															<img src={item.img} alt="" />
-														</div>
-														<div className="nft-text">
-															<p>{item.title}</p>
-															<p>{item.description}</p>
-														</div>
-														<div className="nft-action">
-														<button className="btn btn-primary btn-md link-dark align-self-center stake-confirm" type="button" onClick={async () => this.confirmUnstake(item.id)}>{t('staking.unstake.title')}</button>
-														</div>
-													</div>
-												))
-											}
-										</div>
-									</div>
-								</div>
-							
-							</div>
-						</div>
-					</FadeInRightDiv>
+					</div>
 				</div>
-				
-			</div>
-			
-			{/* <div className="part_f">
-				<Footer/>
-			</div> */}
-			
-			<NotificationContainer />
+			</FadeInLeftDiv>
+			<FadeInRightDiv className="your_staking">
+				<div className="each_element" style={{transition:'0.3s'}}>
+					<div className="each_up" style={{height:'120px'}}>
+						<div className="stake_1">
+							<img src={mark_circle} width="72px" height="72px" />
+						</div>
+						<div className="stake2">
+							<div className="s2_up">SHOE/BTC LP </div>
+							<div className="s2_down">Flexible Time</div>
+						</div>
+						<div className="stake1">
+							<div className="s2_up">APR</div>
+							<div className="s2_down">0.00%</div>
+						</div>
+						<div className="stake2">
+							<div className="s2_up">Token Cap ($Shoe)</div>
+							<div className="s2_down">100,000</div>
+						</div>
+						<div className="stake2">
+							<div className="s2_up">Rewards Given</div>
+							<div className="s2_down">123,288.9041</div>
+						</div>
+						<div className="stake2">
+							<div className="s2_up">Contract</div>
+							<div className="s2_down"><a>Here</a></div>
+						</div>
+						<div className="stake3" onClick={() => this.show_detail()}>
+							Detail&nbsp; &nbsp;<img src={down} width="14px" height="8px"></img>
+						</div>
+					</div>
+					<div className="each_down" style={{maxHeight:detail, overflow:'hidden'}}>
+						<div className="col-md-11 d-flex">
+							<div className="shadow d-flex flex-column flex-fill gradient-card ">
+								<div style={{ margin: "-20px" }}>
+									<ul role="tablist" className="nav nav-tabs" style={{ padding: "10px", paddingBottom: "0" }}>
+										<li role="presentation" className="nav-item"><a role="tab" data-bs-toggle="tab" className="nav-link active" href="#ctl-stake">{t('staking.stake.title')}</a></li>
+										<li role="presentation" className="nav-item"><a role="tab" data-bs-toggle="tab" className="nav-link" href="#ctl-unstake">{t('staking.unstake.title')}</a></li>
+									</ul>
+									<div className="tab-content">
+										<div role="tabpanel" className="tab-pane active" id="ctl-stake">
+											<form id="staking-form">
+												<label className="form-label">{t('staking.stake.percentage')}</label>
+												<div className="d-flex flex-row align-items-baseline staking-slider-wrapper">
+													<input type="range" className="form-range form-control" min="0" max="100" step="1" disabled={state.pending} value={state.ctPercentageStake || 0} onChange={this.handleStakeSlider} style={{ border: "none", background: "none" }} />
+													<label className="form-label align-self-center">{numeral(state.ctPercentageStake || 0).format('0')}%</label>
+												</div>
+												<div className="d-flex flex-row justify-content-evenly staking-percentages">
+													<button className="btn btn-dark btn-sm flex-grow-1 flex-shrink-0 flex-fill" type="button" disabled={state.pending} onClick={() => this.setStakePercentage(0)}>0%</button>
+													<button className="btn btn-dark btn-sm flex-grow-1 flex-shrink-0 flex-fill" type="button" disabled={state.pending} onClick={() => this.setStakePercentage(25)}>25%</button>
+													<button className="btn btn-dark btn-sm flex-grow-1 flex-shrink-0 flex-fill" type="button" disabled={state.pending} onClick={() => this.setStakePercentage(50)}>50%</button>
+													<button className="btn btn-dark btn-sm flex-grow-1 flex-shrink-0 flex-fill" type="button" disabled={state.pending} onClick={() => this.setStakePercentage(75)}>75%</button>
+													<button className="btn btn-dark btn-sm flex-grow-1 flex-shrink-0 flex-fill" type="button" disabled={state.pending} onClick={() => this.setStakePercentage(100)}>100%</button>
+												</div>
+												<label className="form-label">{t('staking.stake.amount')}</label>
+												<input type="number" className="form-control form-control-lg" disabled={state.pending} onChange={this.handleInputStake} value={state.ctValueStake || 0} />
+												<div className="d-flex justify-content-center button-row margin_top">
+													<button className="btn btn-primary btn-md link-dark align-self-center stake-confirm" disabled={state.ctValueStake <= 0 || state.pending} type="button" onClick={async () => this.confirmStake(0)}>{t('staking.stake.title')}</button>
+												</div>
+											</form>
+										</div>
+										<div role="tabpanel" className="tab-pane" id="ctl-unstake">
+											<form id="unstaking-form">
+												<label className="form-label">{t('staking.unstake.percentage')}</label>
+												<div className="d-flex flex-row align-items-baseline staking-slider-wrapper">
+													<input type="range" className="form-range form-control" min="0" max="100" step="1" disabled={state.pending} value={state.ctPercentageUnstake || 0} onChange={this.handleUnstakeSlider} style={{ border: "none", background: "none" }} />
+													<label className="form-label align-self-center">{numeral(state.ctPercentageUnstake || 0).format('0')}%</label>
+												</div>
+												<div className="d-flex flex-row justify-content-evenly staking-percentages">
+													<button className="btn btn-dark btn-sm flex-grow-1 flex-shrink-0 flex-fill" type="button" disabled={state.pending} onClick={() => this.setUnstakePercentage(0)}>0%</button>
+													<button className="btn btn-dark btn-sm flex-grow-1 flex-shrink-0 flex-fill" type="button" disabled={state.pending} onClick={() => this.setUnstakePercentage(25)}>25%</button>
+													<button className="btn btn-dark btn-sm flex-grow-1 flex-shrink-0 flex-fill" type="button" disabled={state.pending} onClick={() => this.setUnstakePercentage(50)}>50%</button>
+													<button className="btn btn-dark btn-sm flex-grow-1 flex-shrink-0 flex-fill" type="button" disabled={state.pending} onClick={() => this.setUnstakePercentage(75)}>75%</button>
+													<button className="btn btn-dark btn-sm flex-grow-1 flex-shrink-0 flex-fill" type="button" disabled={state.pending} onClick={() => this.setUnstakePercentage(100)}>100%</button>
+												</div>
+												<label className="form-label">{t('staking.unstake.amount')}</label>
+												<input type="number" className="form-control form-control-lg" disabled={state.pending} onChange={this.handleInputUnstake} value={state.ctValueUnstake || 0} />
+												<div className="d-flex justify-content-center button-row margin_top">
+													<button className="btn btn-primary btn-md link-dark align-self-center stake-confirm" disabled={state.ctValueUnstake <= 0 || state.pending} type="button" onClick={async () => this.confirmUnstake()}>{t('staking.unstake.title')}</button>
+												</div>
+											</form>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</FadeInRightDiv>
+			<FadeInRightDiv className="your_staking">
+				<div className="each_element" style={{transition:'0.3s'}}>
+					<div className="each_up" style={{height:'120px'}}>
+						<div className="stake_1">
+							<img src={mark_circle} width="72px" height="72px" />
+						</div>
+						<div className="stake2">
+							<div className="s2_up">SHOE/BTC LP </div>
+							<div className="s2_down">Flexible Time</div>
+						</div>
+						<div className="stake1">
+							<div className="s2_up">APR</div>
+							<div className="s2_down">0.00%</div>
+						</div>
+						<div className="stake2">
+							<div className="s2_up">Token Cap ($Shoe)</div>
+							<div className="s2_down">100,000</div>
+						</div>
+						<div className="stake2">
+							<div className="s2_up">Rewards Given</div>
+							<div className="s2_down">123,288.9041</div>
+						</div>
+						<div className="stake2">
+							<div className="s2_up">Contract</div>
+							<div className="s2_down"><a>Here</a></div>
+						</div>
+						<div className="stake3" onClick={() => this.show_detail()}>
+							Detail&nbsp; &nbsp;<img src={down} width="14px" height="8px"></img>
+						</div>
+					</div>
+					<div className="each_down" style={{maxHeight:detail, overflow:'hidden'}}>
+						<div className="col-md-11 d-flex">
+							<div className="shadow d-flex flex-column flex-fill gradient-card ">
+								<div style={{ margin: "-20px" }}>
+									<ul role="tablist" className="nav nav-tabs" style={{ padding: "10px", paddingBottom: "0" }}>
+										<li role="presentation" className="nav-item"><a role="tab" data-bs-toggle="tab" className="nav-link active" href="#ctl-stake">{t('staking.stake.title')}</a></li>
+										<li role="presentation" className="nav-item"><a role="tab" data-bs-toggle="tab" className="nav-link" href="#ctl-unstake">{t('staking.unstake.title')}</a></li>
+									</ul>
+									<div className="tab-content">
+										<div role="tabpanel" className="tab-pane active" id="ctl-stake">
+											<form id="staking-form">
+												<label className="form-label">{t('staking.stake.percentage')}</label>
+												<div className="d-flex flex-row align-items-baseline staking-slider-wrapper">
+													<input type="range" className="form-range form-control" min="0" max="100" step="1" disabled={state.pending} value={state.ctPercentageStake || 0} onChange={this.handleStakeSlider} style={{ border: "none", background: "none" }} />
+													<label className="form-label align-self-center">{numeral(state.ctPercentageStake || 0).format('0')}%</label>
+												</div>
+												<div className="d-flex flex-row justify-content-evenly staking-percentages">
+													<button className="btn btn-dark btn-sm flex-grow-1 flex-shrink-0 flex-fill" type="button" disabled={state.pending} onClick={() => this.setStakePercentage(0)}>0%</button>
+													<button className="btn btn-dark btn-sm flex-grow-1 flex-shrink-0 flex-fill" type="button" disabled={state.pending} onClick={() => this.setStakePercentage(25)}>25%</button>
+													<button className="btn btn-dark btn-sm flex-grow-1 flex-shrink-0 flex-fill" type="button" disabled={state.pending} onClick={() => this.setStakePercentage(50)}>50%</button>
+													<button className="btn btn-dark btn-sm flex-grow-1 flex-shrink-0 flex-fill" type="button" disabled={state.pending} onClick={() => this.setStakePercentage(75)}>75%</button>
+													<button className="btn btn-dark btn-sm flex-grow-1 flex-shrink-0 flex-fill" type="button" disabled={state.pending} onClick={() => this.setStakePercentage(100)}>100%</button>
+												</div>
+												<label className="form-label">{t('staking.stake.amount')}</label>
+												<input type="number" className="form-control form-control-lg" disabled={state.pending} onChange={this.handleInputStake} value={state.ctValueStake || 0} />
+												<div className="d-flex justify-content-center button-row margin_top">
+													<button className="btn btn-primary btn-md link-dark align-self-center stake-confirm" disabled={state.ctValueStake <= 0 || state.pending} type="button" onClick={async () => this.confirmStake(0)}>{t('staking.stake.title')}</button>
+												</div>
+											</form>
+										</div>
+										<div role="tabpanel" className="tab-pane" id="ctl-unstake">
+											<form id="unstaking-form">
+												<label className="form-label">{t('staking.unstake.percentage')}</label>
+												<div className="d-flex flex-row align-items-baseline staking-slider-wrapper">
+													<input type="range" className="form-range form-control" min="0" max="100" step="1" disabled={state.pending} value={state.ctPercentageUnstake || 0} onChange={this.handleUnstakeSlider} style={{ border: "none", background: "none" }} />
+													<label className="form-label align-self-center">{numeral(state.ctPercentageUnstake || 0).format('0')}%</label>
+												</div>
+												<div className="d-flex flex-row justify-content-evenly staking-percentages">
+													<button className="btn btn-dark btn-sm flex-grow-1 flex-shrink-0 flex-fill" type="button" disabled={state.pending} onClick={() => this.setUnstakePercentage(0)}>0%</button>
+													<button className="btn btn-dark btn-sm flex-grow-1 flex-shrink-0 flex-fill" type="button" disabled={state.pending} onClick={() => this.setUnstakePercentage(25)}>25%</button>
+													<button className="btn btn-dark btn-sm flex-grow-1 flex-shrink-0 flex-fill" type="button" disabled={state.pending} onClick={() => this.setUnstakePercentage(50)}>50%</button>
+													<button className="btn btn-dark btn-sm flex-grow-1 flex-shrink-0 flex-fill" type="button" disabled={state.pending} onClick={() => this.setUnstakePercentage(75)}>75%</button>
+													<button className="btn btn-dark btn-sm flex-grow-1 flex-shrink-0 flex-fill" type="button" disabled={state.pending} onClick={() => this.setUnstakePercentage(100)}>100%</button>
+												</div>
+												<label className="form-label">{t('staking.unstake.amount')}</label>
+												<input type="number" className="form-control form-control-lg" disabled={state.pending} onChange={this.handleInputUnstake} value={state.ctValueUnstake || 0} />
+												<div className="d-flex justify-content-center button-row margin_top">
+													<button className="btn btn-primary btn-md link-dark align-self-center stake-confirm" disabled={state.ctValueUnstake <= 0 || state.pending} type="button" onClick={async () => this.confirmUnstake()}>{t('staking.unstake.title')}</button>
+												</div>
+											</form>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</FadeInRightDiv>
+			<FadeInRightDiv className="your_staking">
+				<div className="each_element" style={{transition:'0.3s'}}>
+					<div className="each_up" style={{height:'120px'}}>
+						<div className="stake_1">
+							<img src={mark_circle} width="72px" height="72px" />
+						</div>
+						<div className="stake2">
+							<div className="s2_up">SHOE/BTC LP </div>
+							<div className="s2_down">Flexible Time</div>
+						</div>
+						<div className="stake1">
+							<div className="s2_up">APR</div>
+							<div className="s2_down">0.00%</div>
+						</div>
+						<div className="stake2">
+							<div className="s2_up">Token Cap ($Shoe)</div>
+							<div className="s2_down">100,000</div>
+						</div>
+						<div className="stake2">
+							<div className="s2_up">Rewards Given</div>
+							<div className="s2_down">123,288.9041</div>
+						</div>
+						<div className="stake2">
+							<div className="s2_up">Contract</div>
+							<div className="s2_down"><a>Here</a></div>
+						</div>
+						<div className="stake3" onClick={() => this.show_detail()}>
+							Detail&nbsp; &nbsp;<img src={down} width="14px" height="8px"></img>
+						</div>
+					</div>
+					<div className="each_down" style={{maxHeight:detail, overflow:'hidden'}}>
+						<div className="col-md-11 d-flex">
+							<div className="shadow d-flex flex-column flex-fill gradient-card ">
+								<div style={{ margin: "-20px" }}>
+									<ul role="tablist" className="nav nav-tabs" style={{ padding: "10px", paddingBottom: "0" }}>
+										<li role="presentation" className="nav-item"><a role="tab" data-bs-toggle="tab" className="nav-link active" href="#ctl-stake">{t('staking.stake.title')}</a></li>
+										<li role="presentation" className="nav-item"><a role="tab" data-bs-toggle="tab" className="nav-link" href="#ctl-unstake">{t('staking.unstake.title')}</a></li>
+									</ul>
+									<div className="tab-content">
+										<div role="tabpanel" className="tab-pane active" id="ctl-stake">
+											<form id="staking-form">
+												<label className="form-label">{t('staking.stake.percentage')}</label>
+												<div className="d-flex flex-row align-items-baseline staking-slider-wrapper">
+													<input type="range" className="form-range form-control" min="0" max="100" step="1" disabled={state.pending} value={state.ctPercentageStake || 0} onChange={this.handleStakeSlider} style={{ border: "none", background: "none" }} />
+													<label className="form-label align-self-center">{numeral(state.ctPercentageStake || 0).format('0')}%</label>
+												</div>
+												<div className="d-flex flex-row justify-content-evenly staking-percentages">
+													<button className="btn btn-dark btn-sm flex-grow-1 flex-shrink-0 flex-fill" type="button" disabled={state.pending} onClick={() => this.setStakePercentage(0)}>0%</button>
+													<button className="btn btn-dark btn-sm flex-grow-1 flex-shrink-0 flex-fill" type="button" disabled={state.pending} onClick={() => this.setStakePercentage(25)}>25%</button>
+													<button className="btn btn-dark btn-sm flex-grow-1 flex-shrink-0 flex-fill" type="button" disabled={state.pending} onClick={() => this.setStakePercentage(50)}>50%</button>
+													<button className="btn btn-dark btn-sm flex-grow-1 flex-shrink-0 flex-fill" type="button" disabled={state.pending} onClick={() => this.setStakePercentage(75)}>75%</button>
+													<button className="btn btn-dark btn-sm flex-grow-1 flex-shrink-0 flex-fill" type="button" disabled={state.pending} onClick={() => this.setStakePercentage(100)}>100%</button>
+												</div>
+												<label className="form-label">{t('staking.stake.amount')}</label>
+												<input type="number" className="form-control form-control-lg" disabled={state.pending} onChange={this.handleInputStake} value={state.ctValueStake || 0} />
+												<div className="d-flex justify-content-center button-row margin_top">
+													<button className="btn btn-primary btn-md link-dark align-self-center stake-confirm" disabled={state.ctValueStake <= 0 || state.pending} type="button" onClick={async () => this.confirmStake(0)}>{t('staking.stake.title')}</button>
+												</div>
+											</form>
+										</div>
+										<div role="tabpanel" className="tab-pane" id="ctl-unstake">
+											<form id="unstaking-form">
+												<label className="form-label">{t('staking.unstake.percentage')}</label>
+												<div className="d-flex flex-row align-items-baseline staking-slider-wrapper">
+													<input type="range" className="form-range form-control" min="0" max="100" step="1" disabled={state.pending} value={state.ctPercentageUnstake || 0} onChange={this.handleUnstakeSlider} style={{ border: "none", background: "none" }} />
+													<label className="form-label align-self-center">{numeral(state.ctPercentageUnstake || 0).format('0')}%</label>
+												</div>
+												<div className="d-flex flex-row justify-content-evenly staking-percentages">
+													<button className="btn btn-dark btn-sm flex-grow-1 flex-shrink-0 flex-fill" type="button" disabled={state.pending} onClick={() => this.setUnstakePercentage(0)}>0%</button>
+													<button className="btn btn-dark btn-sm flex-grow-1 flex-shrink-0 flex-fill" type="button" disabled={state.pending} onClick={() => this.setUnstakePercentage(25)}>25%</button>
+													<button className="btn btn-dark btn-sm flex-grow-1 flex-shrink-0 flex-fill" type="button" disabled={state.pending} onClick={() => this.setUnstakePercentage(50)}>50%</button>
+													<button className="btn btn-dark btn-sm flex-grow-1 flex-shrink-0 flex-fill" type="button" disabled={state.pending} onClick={() => this.setUnstakePercentage(75)}>75%</button>
+													<button className="btn btn-dark btn-sm flex-grow-1 flex-shrink-0 flex-fill" type="button" disabled={state.pending} onClick={() => this.setUnstakePercentage(100)}>100%</button>
+												</div>
+												<label className="form-label">{t('staking.unstake.amount')}</label>
+												<input type="number" className="form-control form-control-lg" disabled={state.pending} onChange={this.handleInputUnstake} value={state.ctValueUnstake || 0} />
+												<div className="d-flex justify-content-center button-row margin_top">
+													<button className="btn btn-primary btn-md link-dark align-self-center stake-confirm" disabled={state.ctValueUnstake <= 0 || state.pending} type="button" onClick={async () => this.confirmUnstake()}>{t('staking.unstake.title')}</button>
+												</div>
+											</form>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</FadeInRightDiv>
+			<FadeInRightDiv className="your_staking">
+				<div className="each_element" style={{transition:'0.3s'}}>
+					<div className="each_up" style={{height:'120px'}}>
+						<div className="stake_1">
+							<img src={mark_circle} width="72px" height="72px" />
+						</div>
+						<div className="stake2">
+							<div className="s2_up">SHOE/BTC LP </div>
+							<div className="s2_down">Flexible Time</div>
+						</div>
+						<div className="stake1">
+							<div className="s2_up">APR</div>
+							<div className="s2_down">0.00%</div>
+						</div>
+						<div className="stake2">
+							<div className="s2_up">Token Cap ($Shoe)</div>
+							<div className="s2_down">100,000</div>
+						</div>
+						<div className="stake2">
+							<div className="s2_up">Rewards Given</div>
+							<div className="s2_down">123,288.9041</div>
+						</div>
+						<div className="stake2">
+							<div className="s2_up">Contract</div>
+							<div className="s2_down"><a>Here</a></div>
+						</div>
+						<div className="stake3" onClick={() => this.show_detail()}>
+							Detail&nbsp; &nbsp;<img src={down} width="14px" height="8px"></img>
+						</div>
+					</div>
+					<div className="each_down" style={{maxHeight:detail, overflow:'hidden'}}>
+						<div className="col-md-11 d-flex">
+							<div className="shadow d-flex flex-column flex-fill gradient-card ">
+								<div style={{ margin: "-20px" }}>
+									<ul role="tablist" className="nav nav-tabs" style={{ padding: "10px", paddingBottom: "0" }}>
+										<li role="presentation" className="nav-item"><a role="tab" data-bs-toggle="tab" className="nav-link active" href="#ctl-stake">{t('staking.stake.title')}</a></li>
+										<li role="presentation" className="nav-item"><a role="tab" data-bs-toggle="tab" className="nav-link" href="#ctl-unstake">{t('staking.unstake.title')}</a></li>
+									</ul>
+									<div className="tab-content">
+										<div role="tabpanel" className="tab-pane active" id="ctl-stake">
+											<form id="staking-form">
+												<label className="form-label">{t('staking.stake.percentage')}</label>
+												<div className="d-flex flex-row align-items-baseline staking-slider-wrapper">
+													<input type="range" className="form-range form-control" min="0" max="100" step="1" disabled={state.pending} value={state.ctPercentageStake || 0} onChange={this.handleStakeSlider} style={{ border: "none", background: "none" }} />
+													<label className="form-label align-self-center">{numeral(state.ctPercentageStake || 0).format('0')}%</label>
+												</div>
+												<div className="d-flex flex-row justify-content-evenly staking-percentages">
+													<button className="btn btn-dark btn-sm flex-grow-1 flex-shrink-0 flex-fill" type="button" disabled={state.pending} onClick={() => this.setStakePercentage(0)}>0%</button>
+													<button className="btn btn-dark btn-sm flex-grow-1 flex-shrink-0 flex-fill" type="button" disabled={state.pending} onClick={() => this.setStakePercentage(25)}>25%</button>
+													<button className="btn btn-dark btn-sm flex-grow-1 flex-shrink-0 flex-fill" type="button" disabled={state.pending} onClick={() => this.setStakePercentage(50)}>50%</button>
+													<button className="btn btn-dark btn-sm flex-grow-1 flex-shrink-0 flex-fill" type="button" disabled={state.pending} onClick={() => this.setStakePercentage(75)}>75%</button>
+													<button className="btn btn-dark btn-sm flex-grow-1 flex-shrink-0 flex-fill" type="button" disabled={state.pending} onClick={() => this.setStakePercentage(100)}>100%</button>
+												</div>
+												<label className="form-label">{t('staking.stake.amount')}</label>
+												<input type="number" className="form-control form-control-lg" disabled={state.pending} onChange={this.handleInputStake} value={state.ctValueStake || 0} />
+												<div className="d-flex justify-content-center button-row margin_top">
+													<button className="btn btn-primary btn-md link-dark align-self-center stake-confirm" disabled={state.ctValueStake <= 0 || state.pending} type="button" onClick={async () => this.confirmStake(0)}>{t('staking.stake.title')}</button>
+												</div>
+											</form>
+										</div>
+										<div role="tabpanel" className="tab-pane" id="ctl-unstake">
+											<form id="unstaking-form">
+												<label className="form-label">{t('staking.unstake.percentage')}</label>
+												<div className="d-flex flex-row align-items-baseline staking-slider-wrapper">
+													<input type="range" className="form-range form-control" min="0" max="100" step="1" disabled={state.pending} value={state.ctPercentageUnstake || 0} onChange={this.handleUnstakeSlider} style={{ border: "none", background: "none" }} />
+													<label className="form-label align-self-center">{numeral(state.ctPercentageUnstake || 0).format('0')}%</label>
+												</div>
+												<div className="d-flex flex-row justify-content-evenly staking-percentages">
+													<button className="btn btn-dark btn-sm flex-grow-1 flex-shrink-0 flex-fill" type="button" disabled={state.pending} onClick={() => this.setUnstakePercentage(0)}>0%</button>
+													<button className="btn btn-dark btn-sm flex-grow-1 flex-shrink-0 flex-fill" type="button" disabled={state.pending} onClick={() => this.setUnstakePercentage(25)}>25%</button>
+													<button className="btn btn-dark btn-sm flex-grow-1 flex-shrink-0 flex-fill" type="button" disabled={state.pending} onClick={() => this.setUnstakePercentage(50)}>50%</button>
+													<button className="btn btn-dark btn-sm flex-grow-1 flex-shrink-0 flex-fill" type="button" disabled={state.pending} onClick={() => this.setUnstakePercentage(75)}>75%</button>
+													<button className="btn btn-dark btn-sm flex-grow-1 flex-shrink-0 flex-fill" type="button" disabled={state.pending} onClick={() => this.setUnstakePercentage(100)}>100%</button>
+												</div>
+												<label className="form-label">{t('staking.unstake.amount')}</label>
+												<input type="number" className="form-control form-control-lg" disabled={state.pending} onChange={this.handleInputUnstake} value={state.ctValueUnstake || 0} />
+												<div className="d-flex justify-content-center button-row margin_top">
+													<button className="btn btn-primary btn-md link-dark align-self-center stake-confirm" disabled={state.ctValueUnstake <= 0 || state.pending} type="button" onClick={async () => this.confirmUnstake()}>{t('staking.unstake.title')}</button>
+												</div>
+											</form>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</FadeInRightDiv>
 		</div>
+		// return <div className="staking-container">
+			
+		// 	{/* <div className="i_header"> 
+
+		// 		<div className="ih_right">
+
+		// 			{state.address ?
+		// 				<div onClick={this.disconnectWallet} className="wallet-connect">
+		// 					{state.pending && <span className="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true" > </span>}
+		// 					{state.balance_eth+ " ETH"}
+		// 					<img className="ih_img" src={FoxImg} width="30" height="30"></img>
+		// 					<span className="ih_rtext">{t('staking.disconnect_wallet')}</span>
+		// 				</div>
+		// 				:
+		// 				<div onClick={this.connectWallet} className="wallet-connect">
+		// 					{state.pending && <span className="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true" > </span>}
+		// 					<img className="ih_img" src={FoxImg} width="30" height="30"></img>
+		// 					<span className="ih_rtext">{t('staking.connect_wallet')}</span>
+		// 				</div>
+		// 			}
+		// 		</div>
+		// 	</div>
+		// 	 */}
+		// 	<div className="container">
+		// 		{/* <div className="row text-white staking-header ml-3">
+		// 			<div className="col-md-12 ">
+		// 				<div className="staking-title">
+		// 					<span>NFT</span>
+		// 					<span style={{ color: "#abd9ea" }}>Staking</span>
+		// 					{state.address ?
+		// 						(<a className="shadow btn btn-primary ladda-button btn-md btn-wallet float-right" role="button" onClick={this.disconnectWallet}>
+		// 							{state.pending && <span className="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"> </span>}
+		// 							{t('staking.disconnect_wallet')}
+		// 						</a>)
+		// 						:
+		// 						(<a className="shadow btn btn-primary ladda-button btn-md btn-wallet float-right" role="button" onClick={this.connectWallet}>
+		// 							{state.pending && <span className="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"> </span>}
+		// 							{t('staking.connect_wallet')}
+		// 						</a>)
+		// 					}
+		// 				</div>
+		// 			</div>
+		// 		</div> */}
+
+		// 		<div className="col staking-body mt-4">
+		// 			<FadeInLeftDiv className="col-md-12 d-flex">
+		// 				<div className="shadow d-flex flex-column flex-fill gradient-card primary">
+		// 					<h1>{t('staking.your_info.title')}</h1>
+		// 					<h2>{t('staking.your_info.wallet_address')}</h2>
+		// 					<p>{state.address || t('staking.your_info.connect_wallet')}</p>
+		// 					{/* <h2>{t('staking.your_info.tradeable')}</h2>
+		// 					<AnimatedNumber
+		// 						value={numeral(state.balance || 0).format('0.00')}
+		// 						duration="1000"
+		// 						formatValue={value => `${Number(parseFloat(value).toFixed(2)).toLocaleString('en', { minimumFractionDigits: 2 })}`}
+		// 						className="staking-info"
+		// 					>
+		// 						0 ShoeFy
+		// 					</AnimatedNumber>
+		// 					<h2>{t('staking.your_info.staked')}</h2>
+		// 					<AnimatedNumber
+		// 						value={numeral(state.stakedBalance || 0).format('0.00')}
+		// 						duration="1000"
+		// 						formatValue={value => `${Number(parseFloat(value).toFixed(2)).toLocaleString('en', { minimumFractionDigits: 2 })}`}
+		// 						className="staking-info"
+		// 					>
+		// 						0 ShoeFy
+		// 					</AnimatedNumber> */}
+		// 					<h2>{t('staking.your_info.pending_rewards')}</h2>
+		// 					<AnimatedNumber
+		// 						value={numeral(state.pendingRewards || 0).format('0.00')}
+		// 						duration="1000"
+		// 						formatValue={value => `${Number(parseFloat(value).toFixed(2)).toLocaleString('en', { minimumFractionDigits: 2 })}`}
+		// 						className="staking-info"
+		// 					>
+		// 						0 Shoefy
+		// 					</AnimatedNumber>
+		// 					<h2>{t('staking.your_info.apr')}</h2>
+		// 					<AnimatedNumber
+		// 						value={numeral(state.apr || 0).format('0.00')}
+		// 						duration="1000"
+		// 						formatValue={value => `${Number(parseFloat(value).toFixed(2)).toLocaleString('en', { minimumFractionDigits: 2 })}%`}
+		// 						className="staking-info"
+		// 					>
+		// 						0 Shoefy
+		// 					</AnimatedNumber>
+		// 					<div className="d-flex justify-content-center button-row">
+		// 						<button className="btn btn-complementary btn-md link-dark align-self-center stake-claim" disabled={state.pendingRewards <= 0} type="button" onClick={async () => this.confirmClaimRewards()}>{t('staking.stake.claim_rewards')}</button>
+		// 					</div>
+		// 				</div>
+		// 			</FadeInLeftDiv>
+		// 			{/* <FadeInRightDiv className="col-md-12 d-flex">
+		// 				<div className="shadow d-flex flex-column flex-fill gradient-card dark">
+		// 					<div style={{ margin: "-20px" }}>
+		// 						<ul role="tablist" className="nav nav-tabs" style={{ padding: "10px", paddingBottom: "0" }}>
+		// 							<li role="presentation" className="nav-item"><a role="tab" data-bs-toggle="tab" className="nav-link active" href="#ctl-stake">{t('staking.stake.title')}</a></li>
+		// 							<li role="presentation" className="nav-item"><a role="tab" data-bs-toggle="tab" className="nav-link" href="#ctl-unstake">{t('staking.unstake.title')}</a></li>
+		// 						</ul>
+		// 						<div className="tab-content">
+		// 							<div role="tabpanel" className="tab-pane active" id="ctl-stake">
+		// 								<form id="staking-form">
+		// 									<label className="form-label">{t('staking.stake.percentage')}</label>
+		// 									<div className="d-flex flex-row align-items-baseline staking-slider-wrapper">
+		// 										<input type="range" className="form-range form-control" min="0" max="100" step="1" disabled={state.pending} value={state.ctPercentageStake || 0} onChange={this.handleStakeSlider} style={{ border: "none", background: "none" }} />
+		// 										<label className="form-label align-self-center">{numeral(state.ctPercentageStake || 0).format('0')}%</label>
+		// 									</div>
+		// 									<div className="d-flex flex-row justify-content-evenly staking-percentages">
+		// 										<button className="btn btn-dark btn-sm flex-grow-1 flex-shrink-0 flex-fill" type="button" disabled={state.pending} onClick={() => this.setStakePercentage(0)}>0%</button>
+		// 										<button className="btn btn-dark btn-sm flex-grow-1 flex-shrink-0 flex-fill" type="button" disabled={state.pending} onClick={() => this.setStakePercentage(25)}>25%</button>
+		// 										<button className="btn btn-dark btn-sm flex-grow-1 flex-shrink-0 flex-fill" type="button" disabled={state.pending} onClick={() => this.setStakePercentage(50)}>50%</button>
+		// 										<button className="btn btn-dark btn-sm flex-grow-1 flex-shrink-0 flex-fill" type="button" disabled={state.pending} onClick={() => this.setStakePercentage(75)}>75%</button>
+		// 										<button className="btn btn-dark btn-sm flex-grow-1 flex-shrink-0 flex-fill" type="button" disabled={state.pending} onClick={() => this.setStakePercentage(100)}>100%</button>
+		// 									</div>
+		// 									<label className="form-label">{t('staking.stake.amount')}</label>
+		// 									<input type="number" className="form-control form-control-lg" disabled={state.pending} onChange={this.handleInputStake} value={state.ctValueStake || 0} />
+		// 									<div className="d-flex justify-content-center button-row">
+		// 										<button className="btn btn-primary btn-md link-dark align-self-center stake-confirm" disabled={state.ctValueStake <= 0 || state.pending} type="button" onClick={async () => this.confirmStake()}>{t('staking.stake.title')}</button>
+		// 										<button className="btn btn-complementary btn-md link-dark align-self-center stake-claim" disabled={state.pendingRewards <= 0} type="button" onClick={async () => this.confirmClaimRewards()}>{t('staking.stake.claim_rewards')}</button>
+		// 									</div>
+		// 								</form>
+		// 							</div>
+		// 							<div role="tabpanel" className="tab-pane" id="ctl-unstake">
+		// 								<form id="unstaking-form">
+		// 									<label className="form-label">{t('staking.unstake.percentage')}</label>
+		// 									<div className="d-flex flex-row align-items-baseline staking-slider-wrapper">
+		// 										<input type="range" className="form-range form-control" min="0" max="100" step="1" disabled={state.pending} value={state.ctPercentageUnstake || 0} onChange={this.handleUnstakeSlider} style={{ border: "none", background: "none" }} />
+		// 										<label className="form-label align-self-center">{numeral(state.ctPercentageUnstake || 0).format('0')}%</label>
+		// 									</div>
+		// 									<div className="d-flex flex-row justify-content-evenly staking-percentages">
+		// 										<button className="btn btn-dark btn-sm flex-grow-1 flex-shrink-0 flex-fill" type="button" disabled={state.pending} onClick={() => this.setUnstakePercentage(0)}>0%</button>
+		// 										<button className="btn btn-dark btn-sm flex-grow-1 flex-shrink-0 flex-fill" type="button" disabled={state.pending} onClick={() => this.setUnstakePercentage(25)}>25%</button>
+		// 										<button className="btn btn-dark btn-sm flex-grow-1 flex-shrink-0 flex-fill" type="button" disabled={state.pending} onClick={() => this.setUnstakePercentage(50)}>50%</button>
+		// 										<button className="btn btn-dark btn-sm flex-grow-1 flex-shrink-0 flex-fill" type="button" disabled={state.pending} onClick={() => this.setUnstakePercentage(75)}>75%</button>
+		// 										<button className="btn btn-dark btn-sm flex-grow-1 flex-shrink-0 flex-fill" type="button" disabled={state.pending} onClick={() => this.setUnstakePercentage(100)}>100%</button>
+		// 									</div>
+		// 									<label className="form-label">{t('staking.unstake.amount')}</label>
+		// 									<input type="number" className="form-control form-control-lg" disabled={state.pending} onChange={this.handleInputUnstake} value={state.ctValueUnstake || 0} />
+		// 									<div className="d-flex justify-content-center button-row">
+		// 										<button className="btn btn-primary btn-md link-dark align-self-center stake-confirm" disabled={state.ctValueUnstake <= 0 || state.pending} type="button" onClick={async () => this.confirmUnstake()}>{t('staking.unstake.title')}</button>
+		// 										<button className="btn btn-complementary btn-md link-dark align-self-center stake-claim" disabled={state.pendingRewards <= 0} type="button" onClick={async () => this.confirmClaimRewards()}>{t('staking.stake.claim_rewards')}</button>
+		// 									</div>
+		// 								</form>
+		// 							</div>
+		// 						</div>
+		// 					</div>
+		// 				</div>
+		// 			</FadeInRightDiv> */}
+		// 			<FadeInRightDiv className="col-md-12 d-flex mt-5">
+		// 				<div className="shadow d-flex flex-column flex-fill gradient-card dark">
+		// 					<div style={{ margin: "-20px" }}>
+		// 					<ul role="tablist" className="nav nav-tabs" style={{ padding: "10px", paddingBottom: "0" }}>
+		// 							<li role="presentation" className="nav-item"><a role="tab" data-bs-toggle="tab" className="nav-link active" href="#ctl-stake">{t('staking.stake.title')}</a></li>
+		// 							<li role="presentation" className="nav-item"><a role="tab" data-bs-toggle="tab" className="nav-link" href="#ctl-unstake">{t('staking.unstake.title')}</a></li>
+		// 						</ul>
+		// 						<div className="tab-content">
+		// 							<div role="tabpanel" className="tab-pane active" id="ctl-stake">
+		// 								<div className="row row-cols-3 nft-container">
+		// 									{
+		// 										state.userNFTs && state.userNFTs.map((item) => (
+		// 											<div className="col nft-item">
+		// 												<div className="d-flex nft-img">
+		// 													<img src={item.img} alt="" />
+		// 												</div>
+		// 												<div className="nft-text">
+		// 													<p>{item.title}</p>
+		// 													<p>{item.description}</p>
+		// 												</div>
+		// 												<div className="nft-action">
+		// 													<button className="btn btn-primary btn-md link-dark align-self-center stake-confirm" type="button" onClick={async () => this.confirmStake(item.id)}>{t('staking.stake.title')}</button>
+		// 												</div>
+		// 											</div>
+		// 										))
+		// 									}
+		// 								</div>
+		// 							</div>
+		// 							<div role="tabpanel" className="tab-pane" id="ctl-unstake">
+		// 								<div className="row row-cols-3 nft-container">
+		// 									{
+		// 										state.stakedNFTs && state.stakedNFTs.map((item) => (
+		// 											<div className="col nft-item">
+		// 												<div className="d-flex nft-img">
+		// 													<img src={item.img} alt="" />
+		// 												</div>
+		// 												<div className="nft-text">
+		// 													<p>{item.title}</p>
+		// 													<p>{item.description}</p>
+		// 												</div>
+		// 												<div className="nft-action">
+		// 												<button className="btn btn-primary btn-md link-dark align-self-center stake-confirm" type="button" onClick={async () => this.confirmUnstake(item.id)}>{t('staking.unstake.title')}</button>
+		// 												</div>
+		// 											</div>
+		// 										))
+		// 									}
+		// 								</div>
+		// 							</div>
+		// 						</div>
+							
+		// 					</div>
+		// 				</div>
+		// 			</FadeInRightDiv>
+		// 		</div>
+				
+		// 	</div>
+			
+		// 	{/* <div className="part_f">
+		// 		<Footer/>
+		// 	</div> */}
+			
+		// 	<NotificationContainer />
+		// </div>
 	}
 }
 

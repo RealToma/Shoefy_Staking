@@ -9,7 +9,8 @@ import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 function Footer() {
     return (
         <div className="i_footer"> 
-            <div className="if_left">
+            Copyright @2021 Shoefy Vesting Portal
+            {/* <div className="if_left">
                 <span className="ifl1">©</span>
                 <span className="ifl2">ShoeFy</span>
                 <span className="ifl1">All Rigjts Reserved</span>
@@ -20,7 +21,7 @@ function Footer() {
                 <TwitterIcon className="ifr_icon" sx={{ fontSize: 20 }}/>
                 <HelpOutlineIcon className="ifr_icon1" sx={{ fontSize: 20 }}/>
                 <span>Help Center</span>
-            </div>
+            </div> */}
         </div>
     );
 }
